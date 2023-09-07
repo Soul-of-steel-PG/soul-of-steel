@@ -1,1 +1,0 @@
-Este archivo es para garantizar la creación de las carpetas. Eliminar una vez tenga contenido.
