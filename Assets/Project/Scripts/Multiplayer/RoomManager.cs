@@ -33,7 +33,7 @@ public class RoomManager : MonoBehaviourPunCallbacks {
         roomIds.Add(roomId);
 
         Debug.Log($"Creating a new room");
-        PhotonNetwork.JoinOrCreateRoom($"Room #{roomId}", new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom($"Room #{roomId}", new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default);
         PhotonNetwork.LoadLevel(GAME_SCENE);
     }
 

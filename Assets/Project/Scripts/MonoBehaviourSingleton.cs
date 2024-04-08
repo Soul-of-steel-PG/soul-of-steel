@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSingleton<T> {
     private static T _instance;
@@ -15,6 +16,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSi
 
             return _instance;
         }
+        protected set => _instance = value;
     }
     
     protected virtual void Awake()
@@ -27,5 +29,15 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSi
 
         _instance = (T)this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public static bool HasInstance() {
+        return _instance != null;
+    }
+
+    protected virtual void OnDestroy() {
+        if (_instance == this) {
+            _instance = null;
+        }
     }
 }
