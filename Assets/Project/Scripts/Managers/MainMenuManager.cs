@@ -17,4 +17,8 @@ public class MainMenuManager : MonoBehaviour {
     private void OnMasterServerConnected() {
         playButton.interactable = true;
     }
+
+    private void OnDestroy() {
+        if (GameManager.HasInstance()) GameManager.Instance.OnMasterServerConnected -= OnMasterServerConnected;
+    }
 }
