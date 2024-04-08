@@ -1,52 +1,65 @@
 ﻿using UnityEngine;
 
-// public enum CardType {
-//     Pilot,
-//     Weapon,
-//     CampEffect
-// }
-
-public interface ICardController {
-    void InitCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery, bool isCampEffect,
-        Sprite imageSource);
-
-    void ShowCard();
-    // CardType GetCardType();
+public enum CardType {
+    Pilot,
+    Weapon,
+    Armor,
+    CampEffect
 }
 
-public class CardController : ICardController {
+public interface ICardController {
+    CardType GetCardType();
+    public void ManageRightClick();
+    void PrintInfo();
+}
+
+public abstract class CardController : ICardController {
     private readonly ICardView _view;
 
-    private string _cardName;
-    private string _cardDescription;
-    private int _scrapCost;
     private int _scrapRecovery;
     private bool _isCampEffect;
-    private Sprite _imageSource;
 
-    public CardController(ICardView view) {
+    protected CardType Type;
+    protected string CardName { get; private set; }
+    protected string CardDescription { get; private set; }
+    protected int ScrapCost { get; private set; }
+    protected Sprite ImageSource { get; private set; }
+
+    protected CardController(ICardView view) {
         _view = view;
     }
 
-    public void InitCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery, bool isCampEffect,
-        Sprite imageSource) {
-        _cardName = cardName;
-        _cardDescription = cardDescription;
-        _scrapCost = scrapCost;
+    protected void InitCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery,
+        bool isCampEffect, Sprite imageSource, CardType type) {
+        CardName = cardName;
+        CardDescription = cardDescription;
+        ScrapCost = scrapCost;
         _scrapRecovery = scrapRecovery;
         _isCampEffect = isCampEffect;
-        _imageSource = imageSource;
+        ImageSource = imageSource;
+        Type = type;
 
         SetCardUI();
     }
 
     protected virtual void SetCardUI() {
-        _view.SetCardUI(_cardName, _cardDescription, _scrapCost, _imageSource);
+        _view.SetCardUI(CardName, CardDescription, ScrapCost, ImageSource);
     }
 
-    public virtual void ShowCard() {
-        Debug.Log($"opening the card");
+    protected virtual void ShowCard() {
+        UIManager.Instance.ShowCardPanel(CardName, CardDescription, ScrapCost, ImageSource);
     }
 
-    // public abstract CardType GetCardType();
+    public virtual void ManageRightClick() {
+        ShowCard();
+    }
+
+    public void PrintInfo() {
+        string s = CardName + "\n";
+        s += CardDescription + "\n";
+        s += $"{ScrapCost}\n";
+        Debug.Log(s);
+    }
+
+    public abstract CardType GetCardType();
 }

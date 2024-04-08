@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public interface ICardView {
@@ -11,18 +10,15 @@ public interface ICardView {
 }
 
 [Serializable]
-public class CardView : MonoBehaviour, ICardView {
-    [BoxGroup("Card UI Components")]
-    [SerializeField] private TMP_Text nameTMP;
-    [SerializeField] private TMP_Text descriptionTMP;
-    [SerializeField] private TMP_Text scrapCostTMP;
-    [SerializeField] private Image imageSourceIMG;
-    
-    private ICardController _cardController;
-
-    public ICardController CardController {
-        get { return _cardController ??= new CardController(this); }
-    }
+public abstract class CardView : MonoBehaviour, ICardView, IPointerClickHandler {
+    [SerializeField, BoxGroup("Card UI Components")]
+    private TMP_Text nameTMP;
+    [SerializeField, BoxGroup("Card UI Components")]
+    private TMP_Text descriptionTMP;
+    [SerializeField, BoxGroup("Card UI Components")]
+    private TMP_Text scrapCostTMP;
+    [SerializeField, BoxGroup("Card UI Components")]
+    private Image imageSourceIMG;
     
     public virtual void SetCardUI(string cardName, string cardDescription, int scrapCost, Sprite imageSource) {
         nameTMP.text = cardName;
@@ -30,11 +26,18 @@ public class CardView : MonoBehaviour, ICardView {
         scrapCostTMP.text = $"{scrapCost}";
         imageSourceIMG.sprite = imageSource;
     }
-}
 
-public class Test {
-    public void TestMethod() {
-        var cardView = new CardView();
-        cardView.CardController.InitCard("Card Name", "Card Description", 10, 10, false, null);
-    }    
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.button == PointerEventData.InputButton.Right) {
+            ManageRightClick();
+        }
+    }
+
+    public abstract void ManageRightClick();
+
+    public abstract CardType GetCardType();
+
+    public abstract void InitCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery,
+        bool isCampEffect, Sprite imageSource, int health, BoardView defaultMovement);
+    
 }
