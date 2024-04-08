@@ -4256,12 +4256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gamePanel: {fileID: 7614370142274010205, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-  _currentGamePanel: {fileID: 0}
   cardPanel: {fileID: 3517374056019304298, guid: fd9dae27f69530e418d1dd66ea842720, type: 3}
-  _currentCardPanel: {fileID: 0}
   waitingForOpponentPanel: {fileID: 5654679314067792678, guid: 6468278e1decb8b4fae2f27c4358573d, type: 3}
-  _currentWaitingForOpponentPanel: {fileID: 0}
-  matchView: {fileID: 0}
 --- !u!1 &765311759
 GameObject:
   m_ObjectHideFlags: 0
@@ -7561,7 +7557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1817221476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9523,8 +9519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fae4d733a5e62140b10bb052b98b798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testing: 0
-  handPanel: {fileID: 0}
+  currentPhase: 0
   currentPriority: 0
   boardView: {fileID: 0}
   playerList: []
