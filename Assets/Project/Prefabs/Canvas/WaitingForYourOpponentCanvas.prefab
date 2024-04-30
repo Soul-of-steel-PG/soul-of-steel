@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 141556176992186396}
   - component: {fileID: 3710541234212249756}
   - component: {fileID: 7723068552957949383}
+  - component: {fileID: 3175968200537175615}
   m_Layer: 5
   m_Name: WaitingForYourOpponentCanvas
   m_TagString: Untagged
@@ -102,6 +103,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 55
+--- !u!114 &3175968200537175615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5654679314067792678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ef2edd861b41efa4213a255fd06a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6221479911788359900
 GameObject:
   m_ObjectHideFlags: 0

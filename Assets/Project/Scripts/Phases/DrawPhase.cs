@@ -7,7 +7,7 @@ public class DrawPhase : Phase {
     }
 
     public override IEnumerator Start() {
-        GameManager.Instance.playerList.ForEach(player => player.PlayerController.DrawCards(5, true));
+        GameManager.Instance.playerList.ForEach(player => player.DrawCards(5, true));
 
         matchView.SetCurrentPhaseText("drawing cards");
         yield break;
@@ -18,7 +18,7 @@ public class DrawPhase : Phase {
 
         if (GameManager.HasInstance()) GameManager.Instance.OnDrawFinishedEvent -= FinishDraw;
     }
-    
+
     public override IEnumerator End() {
         yield break;
     }

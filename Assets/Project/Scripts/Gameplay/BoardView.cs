@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 public interface IBoardView {
@@ -21,7 +22,7 @@ public class BoardView : MonoBehaviour, IBoardView {
     [OnValueChanged("GenerateBoard")] public float offset;
     public GameObject cellPrefab;
 
-    [SerializeField] public List<List<CellView>> _boardStatus;
+    [ShowInInspector] private List<List<CellView>> _boardStatus = new List<List<CellView>>();
 
     private IBoardController _boardController;
 
@@ -30,11 +31,11 @@ public class BoardView : MonoBehaviour, IBoardView {
     }
 
     private void Awake() {
-        GameManager.Instance.boardView = this;
+        SetBoardStatusInPlaymode();
     }
 
     private void Start() {
-        GenerateBoard();
+        GameManager.Instance.boardView = this;
     }
 
     public Transform GetTransform() {
@@ -51,7 +52,6 @@ public class BoardView : MonoBehaviour, IBoardView {
 
     [Button]
     public void GenerateBoard() {
-        _boardStatus = new List<List<CellView>>();
         DestroyTransformChildren();
 
         BoardController.GenerateBoardCells(xBoardSize / BoardController.GetBoardCount(),
@@ -79,5 +79,21 @@ public class BoardView : MonoBehaviour, IBoardView {
 
     public void SetBoardStatus(List<List<CellView>> board) {
         _boardStatus = board;
+    }
+
+    public void SetBoardStatusCellType(Vector2 index, CellType cellType) {
+        _boardStatus[(int)index.y][(int)index.x].CellController.SetType(cellType);
+    }
+
+    public void SetBoardStatusInPlaymode() {
+        _boardStatus = new List<List<CellView>>();
+
+        for (int i = 0; i < transform.childCount / BoardController.GetBoardCount(); i++) {
+            _boardStatus.Add(new List<CellView>());
+            for (int j = 0; j < BoardController.GetBoardCount(); j++) {
+                _boardStatus[i].Add(transform.GetChild(j + i * 10).GetComponent<CellView>());
+                if (_boardStatus[i].Count == 10) break;
+            }
+        }
     }
 }

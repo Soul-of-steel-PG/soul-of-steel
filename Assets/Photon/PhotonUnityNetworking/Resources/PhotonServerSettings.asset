@@ -39,6 +39,14 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - TurnOnAllSprites
+  - TurnOnSprite
+  - RpcSetTurn
+  - RpcUpdateTurn
+  - RpcSetAttackTurn
+  - RpcReceivedDamage
+  - RpcUpdateBoard
+  - RpcPutMines
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

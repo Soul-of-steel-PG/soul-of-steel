@@ -1,0 +1,219 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d42cc899014800bb0e959e9a88e7be, type: 3}
+  m_Name: PlayerCards0
+  m_EditorClassIdentifier: 
+  playerCards:
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 33
+    CardName: pilotjeje
+    Type: 
+    TypeEnum: 0
+    Description: afasdkjfaksdlf
+    Cost: 1
+    Energy: 2
+    Damage: 3
+    Shield: 4
+    Recovery: 5
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 1
+    SerializedMovements:
+    - steps:
+      - Steps: 2
+        Direction: "\u2191"
+      fullStrings: 
+      degrees: 5a000000
+    AttackTypeEnum: 1
+    AttackDistance: 1
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 18
+    CardName: Rifle de Francotirador Electromagnetico
+    Type: Arma
+    TypeEnum: 1
+    Description: 
+    Cost: 3
+    Energy: 1
+    Damage: 6
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 1
+    AttackDistance: 4
+    AttackArea: 5
+    Movements: 0
+    AttackType: Linearecta

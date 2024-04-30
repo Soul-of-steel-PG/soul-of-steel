@@ -93,6 +93,7 @@ MonoBehaviour:
   outline: {fileID: 3346838413807210050}
   cellXSize: 0
   cellYSize: 0
+  index: {x: 0, y: 0}
 --- !u!114 &3346838413807210050
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,16 +7,22 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public interface ICellView {
+    void SetCellColor(Color color);
+    Color GetOriginalColor();
 }
 
 [Serializable]
-public class CellView : MonoBehaviour, ICellView, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
+public class CellView : MonoBehaviour, ICellView, IPointerEnterHandler, IPointerExitHandler,
+    IPointerClickHandler {
     [SerializeField] private Outline outline;
-    
+
     public float cellXSize;
     public float cellYSize;
 
     public Vector2 index;
+
+    private Image _cellImage;
+    private Color _originalColor;
 
     private ICellController _cellController;
 
@@ -24,6 +31,13 @@ public class CellView : MonoBehaviour, ICellView, IPointerEnterHandler, IPointer
     }
 
     private void Start() {
+        _cellImage = GetComponent<Image>();
+        _originalColor = _cellImage.color;
+    }
+
+    private void Update() {
+        if (CellController.GetCellType() == CellType.Mined) {
+        }
     }
 
     public void SetSize() {
@@ -42,5 +56,14 @@ public class CellView : MonoBehaviour, ICellView, IPointerEnterHandler, IPointer
 
     public void OnPointerClick(PointerEventData eventData) {
         GameManager.Instance.OnCellClicked(index);
+        EffectManager.Instance.CellSelected(index, CellController.GetCellType() == CellType.Normal);
+    }
+
+    public void SetCellColor(Color color) {
+        _cellImage.color = color;
+    }
+
+    public Color GetOriginalColor() {
+        return _originalColor;
     }
 }
