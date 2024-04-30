@@ -2,86 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 
 public class Downloader : MonoBehaviourSingleton<Downloader> {
-    private const string GoogleSheetDocId = "15zQYSLFn7ehC5R-8KlKORhvuqxqNjIEXrH08lllOvBA";
-    private const string Url = "https://docs.google.com/spreadsheets/d/" + GoogleSheetDocId + "/export?format=xlsx";
+    private const string GoogleJsonId = "1_Ta--WuJJ-xkT9oDxIOj4k-yfWRjk9Wu";
+    private const string Url = "https://drive.google.com/uc?export=download&id=" + GoogleJsonId;
 
-    public void LoadInfo(CardsInfo cardsInfo) {
-        StartCoroutine(DownloadData(cardsInfo));
+    public CardsDataBase data;
+
+    [Button]
+    public void LoadInfo(CardsDataBase playerCardsInfo) {
+        if (playerCardsInfo == null) playerCardsInfo = data;
+        StartCoroutine(DownloadData(playerCardsInfo));
     }
 
-    private IEnumerator DownloadData(CardsInfo cardsInfo) {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(Url)) {
-            yield return webRequest.SendWebRequest();
+    private IEnumerator DownloadData(CardsDataBase playerCardsInfo) {
+        UnityWebRequest request = UnityWebRequest.Get(Url);
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                webRequest.result == UnityWebRequest.Result.ProtocolError) {
-                Debug.LogError($"Download error: {webRequest.error}");
-                string downloadedData = PlayerPrefs.GetString("LastDataDownloaded", null);
-                Debug.Log($"Using stale data: {downloadedData}");
-                yield break;
-            }
+        yield return request.SendWebRequest();
 
-            if (webRequest.result != UnityWebRequest.Result.Success) {
-                Debug.LogError("Unknown error while downloading data");
-                yield break;
-            }
+        if (request.result != UnityWebRequest.Result.Success) {
+            Debug.LogError($"Error fetching data: {request.error}");
+        }
+        else {
+            // Get the JSON response as a string
+            string jsonResponse = request.downloadHandler.text;
+            jsonResponse = jsonResponse.Replace("\n", "");
 
-            Debug.Log("Download success");
-
-            byte[] downloadedBytes = webRequest.downloadHandler.data;
-
-            // Check if the downloaded data is a ZIP archive
-            if (IsZipArchive(downloadedBytes)) {
-                // Decompress the ZIP archive
-                byte[] decompressedBytes = DecompressZip(downloadedBytes);
-                if (decompressedBytes == null) {
-                    Debug.LogError("Failed to decompress ZIP archive");
-                    yield break;
-                }
-
-                // Process the decompressed data
-                StartCoroutine(ProcessData(decompressedBytes, cardsInfo));
-            }
-            else {
-                // Process the downloaded data directly
-                StartCoroutine(ProcessData(downloadedBytes, cardsInfo));
-            }
+            StartCoroutine(ProcessData(jsonResponse, playerCardsInfo));
         }
     }
 
-    private bool IsZipArchive(byte[] data) {
-        // Check if the first two bytes of the data match the ZIP file header
-        return data.Length > 3 && data[0] == 0x50 && data[1] == 0x4B && data[2] == 0x03 && data[3] == 0x04;
-    }
 
-    private byte[] DecompressZip(byte[] data) {
-        try {
-            using (MemoryStream compressedStream = new MemoryStream(data))
-            using (var zipArchive =
-                   new System.IO.Compression.ZipArchive(compressedStream, System.IO.Compression.ZipArchiveMode.Read)) {
-                // Assuming there's only one entry in the ZIP archive
-                var entry = zipArchive.Entries[0];
-                using (var entryStream = entry.Open()) {
-                    using (MemoryStream decompressedStream = new MemoryStream()) {
-                        entryStream.CopyTo(decompressedStream);
-                        return decompressedStream.ToArray();
-                    }
-                }
-            }
-        }
-        catch (Exception e) {
-            Debug.LogError($"Error decompressing ZIP archive: {e.Message}");
-            return null;
-        }
-    }
-
-    private IEnumerator ProcessData(byte[] data, CardsInfo cardsInfo) {
-        if (data == null || data.Length == 0) {
+    private IEnumerator ProcessData(string data, CardsDataBase playerCardsInfo) {
+        if (string.IsNullOrEmpty(data)) {
             Debug.LogError("Downloaded data is null or empty, cannot process");
             yield break;
         }
@@ -90,5 +47,13 @@ public class Downloader : MonoBehaviourSingleton<Downloader> {
 
         Debug.Log($"Processing data: {data}");
         // Implement your data processing logic here
+
+        yield return playerCardsInfo.cardDataBase = JsonUtility.FromJson<CardInfoSerialized>(data);
+
+        foreach (CardInfoSerialized.CardInfoStruct card in playerCardsInfo.cardDataBase.Sheet1) {
+            card.SetType();
+            card.SetMovements();
+            card.SetAttackType();
+        }
     }
 }

@@ -1,38 +1,52 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface IPilotCardController : ICardController {
-    void InitializePilotCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-        bool isCampEffect, Sprite imageSource, int health, BoardView defaultMovement, CardType type,
-        int defaultDamage = 0);
+    void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery, Sprite imageSource,
+        int health, Movement defaultMovement, CardType type, int defaultDamage = 0);
+
+    Movement GetDefaultMovement();
+    int GetDefaultDamage();
+    int GetHealth();
 }
 
-public class PilotCardController: CardController, IPilotCardController {
+public class PilotCardController : CardController, IPilotCardController {
     private readonly IPilotCardView _view;
-    
-    [Header("Pilot Properties")]
-    private int _health;
+
+    [Header("Pilot Properties")] private int _health;
     private int _defaultDamage;
-    private BoardView _defaultMovement;
-    [Space(20)]public Vector2 position;
+    private Movement _defaultMovement;
+    [Space(20)] public Vector2 position;
 
     public PilotCardController(IPilotCardView view) : base(view) {
         _view = view;
     }
-    
-    public void InitializePilotCard(string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-        bool isCampEffect, Sprite imageSource, int health, BoardView defaultMovement, CardType type,
-        int defaultDamage = 0) {
+
+    public void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
+        Sprite imageSource, int health, Movement defaultMovement, CardType type,
+        int defaultDamage = 1) {
         _health = health;
         _defaultMovement = defaultMovement;
         _defaultDamage = defaultDamage;
-        
+
         /* Init card method called at the end because I am calling SetCardUI from it,
            and in this class I am modifying the SetCardUI*/
-        InitCard(cardName, cardDescription, scrapCost, scrapRecovery, isCampEffect, imageSource, type);
+        base.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
     }
 
-    protected override void SetCardUI()
-    {
+    public Movement GetDefaultMovement() {
+        return _defaultMovement;
+    }
+
+    public int GetDefaultDamage() {
+        return _defaultDamage;
+    }
+
+    public int GetHealth() {
+        return _health;
+    }
+
+    protected override void SetCardUI() {
         _view.SetCardUI(CardName, CardDescription, ScrapCost, ImageSource, _health);
     }
 
