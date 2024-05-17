@@ -4,7 +4,8 @@ using Photon.Pun;
 using UnityEngine;
 
 [Flags]
-public enum CardType {
+public enum CardType
+{
     Pilot,
     Weapon,
     Armor,
@@ -16,7 +17,8 @@ public enum CardType {
     Chest
 }
 
-public interface ICardController {
+public interface ICardController
+{
     CardType GetCardType();
     public void ManageRightClick();
     void PrintInfo();
@@ -25,9 +27,13 @@ public interface ICardController {
     bool GetSelected();
     void DoEffect(int originId);
     void DismissCard();
+    int GetId();
+
+    int GetScrapCost();
 }
 
-public abstract class CardController : ICardController {
+public abstract class CardController : ICardController
+{
     private readonly ICardView _view;
 
     private Vector3 startingPos;
@@ -42,12 +48,15 @@ public abstract class CardController : ICardController {
     protected Sprite ImageSource { get; private set; }
     protected int Id;
 
-    protected CardController(ICardView view) {
+    protected CardController(ICardView view)
+    {
         _view = view;
     }
 
     public virtual void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-        Sprite imageSource, CardType type) {
+        Sprite imageSource, CardType type)
+    {
+        //Debug.Log($"Card controller init card {cardName} with id {id}");
         Id = id;
         CardName = cardName;
         CardDescription = cardDescription;
@@ -60,19 +69,23 @@ public abstract class CardController : ICardController {
         startingPos = _view.GetGameObject().transform.position;
     }
 
-    protected virtual void SetCardUI() {
+    protected virtual void SetCardUI()
+    {
         _view.SetCardUI(CardName, CardDescription, ScrapCost, ImageSource);
     }
 
-    protected virtual void ShowCard() {
+    protected virtual void ShowCard()
+    {
         UIManager.Instance.ShowCardPanel(CardName, CardDescription, ScrapCost, ImageSource);
     }
 
-    public virtual void ManageRightClick() {
+    public virtual void ManageRightClick()
+    {
         ShowCard();
     }
 
-    public void PrintInfo() {
+    public void PrintInfo()
+    {
         string s = CardName + "\n";
         s += CardDescription + "\n";
         s += $"{ScrapCost}\n";
@@ -81,50 +94,54 @@ public abstract class CardController : ICardController {
 
     public abstract CardType GetCardType();
 
-    public void Select(bool deselect = false) {
+    public void Select(bool deselect = false)
+    {
         if (GameManager.Instance.LocalPlayerInstance._inAnimation) return;
         if (GameManager.Instance.LocalPlayerInstance.PlayerController.GetCardsSelected() && !_selected) return;
 
-        if (_isSelecting) {
+        if (_isSelecting)
+        {
+            if (!GameManager.Instance.LocalPlayerInstance.PlayerController.TryPayingForCard(GetScrapCost())) return;
             _selected = !deselect && !_selected;
-            SelectAnimation(_selected);
-            GameManager.Instance.OnCardSelected(_view.GetGameObject().GetComponent<CardView>(), _selected);
+            _view.SelectAnimation(_selected);
+
+            switch (Type)
+            {
+                case CardType.Weapon:
+                case CardType.Arm:
+                    GameManager.Instance.OnCardSelected(GameManager.Instance.LocalPlayerInstance,
+                        _view.GetGameObject().GetComponent<ArmCardView>(), _selected);
+                    break;
+                case CardType.CampEffect:
+                case CardType.Hacking:
+                    GameManager.Instance.OnCardSelected(GameManager.Instance.LocalPlayerInstance,
+                        _view.GetGameObject().GetComponent<EffectCardView>(), _selected);
+                    break;
+                case CardType.Generator:
+                    break;
+                case CardType.Legs:
+                    GameManager.Instance.OnCardSelected(GameManager.Instance.LocalPlayerInstance,
+                        _view.GetGameObject().GetComponent<LegsCardView>(), _selected);
+                    break;
+                case CardType.Armor:
+                case CardType.Chest:
+                    GameManager.Instance.OnCardSelected(GameManager.Instance.LocalPlayerInstance,
+                        _view.GetGameObject().GetComponent<EquipmentCardView>(), _selected);
+                    break;
+                default:
+                    Debug.Log($"CARD NOT IMPLEMENTED");
+                    break;
+            }
         }
-        else if (!_isSelecting && _selected) {
+        else if (!_isSelecting && _selected)
+        {
             _selected = !deselect;
         }
     }
 
-    private void SelectAnimation(bool select) {
-        Transform animationReference = GameManager.Instance.handPanel.animationReference;
-        Transform parent = GameManager.Instance.handPanel.transform.parent;
 
-        animationReference.SetParent(parent);
-
-        Transform t = _view.GetGameObject().transform;
-        t.SetParent(parent);
-
-        Vector3 endPos = select
-            ? GameManager.Instance.middlePanel.transform.position
-            : animationReference.position;
-
-        if (select) animationReference.SetParent(GameManager.Instance.handPanel.transform);
-
-        GameManager.Instance.LocalPlayerInstance._inAnimation = true;
-        t.DOMove(endPos, 0.5f).OnComplete(() => {
-            t.SetParent(select
-                ? GameManager.Instance.middlePanel.transform
-                : GameManager.Instance.handPanel.transform);
-
-            if (!select) {
-                animationReference.SetParent(GameManager.Instance.handPanel.transform);
-            }
-
-            GameManager.Instance.LocalPlayerInstance._inAnimation = false;
-        });
-    }
-
-    public void DismissCard() {
+    public void DismissCard()
+    {
         Transform t = _view.GetGameObject().transform;
         ScrapPanel scrapPanel = GameManager.Instance.scrapPanel;
 
@@ -142,15 +159,28 @@ public abstract class CardController : ICardController {
         });
     }
 
-    public void IsSelecting(bool isSelecting) {
+    public int GetId()
+    {
+        return Id;
+    }
+
+    public void IsSelecting(bool isSelecting)
+    {
         _isSelecting = isSelecting;
     }
 
-    public bool GetSelected() {
+    public bool GetSelected()
+    {
         return _selected;
     }
 
-    public virtual void DoEffect(int originId) {
+    public virtual void DoEffect(int originId)
+    {
         // Debug.Log($"doing effect from {CardName}");
+    }
+
+    public int GetScrapCost()
+    {
+        return ScrapCost;
     }
 }

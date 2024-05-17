@@ -8,20 +8,24 @@ using UnityEngine.UI;
 using WebSocketSharp;
 
 [Flags]
-public enum AttackType {
+public enum AttackType
+{
     None,
     StraightLine,
     Square,
     Cone
 }
 
+
 [Serializable]
-public class CardInfoSerialized {
+public class CardInfoSerialized
+{
     public List<CardInfoStruct> Sheet1;
     private List<CardInfoStruct> Sheet2;
 
     [Serializable]
-    public class CardInfoStruct {
+    public class CardInfoStruct
+    {
         Dictionary<string, CardType> typeMapping = new() {
             { "Campo", CardType.CampEffect },
             { "hackeo", CardType.Hacking },
@@ -31,6 +35,7 @@ public class CardInfoSerialized {
             { "Brazo", CardType.Arm },
             { "Pecho", CardType.Chest },
             { "Piernas", CardType.Legs },
+            { "Piloto", CardType.Pilot }
         };
 
         Dictionary<string, AttackType> attackTypeMapping = new() {
@@ -69,34 +74,42 @@ public class CardInfoSerialized {
         [OnValueChanged("SetAttackType"), HideInInspector]
         public string AttackType;
 
-        public void SetType() {
+        public void SetType()
+        {
             Type = Type.Replace(" ", "");
             if (Type == "Brazo/Arma") Type = "Arma";
-            if (typeMapping.TryGetValue(Type, out CardType enumValue)) {
+            if (typeMapping.TryGetValue(Type, out CardType enumValue))
+            {
                 TypeEnum = enumValue;
             }
-            else {
+            else
+            {
                 throw new ArgumentException($"Invalid CardType Type: {Type}");
             }
         }
 
-        public void SetMovements() {
+        public void SetMovements()
+        {
             if (Movements.IsNullOrEmpty() || Movements == "0") return;
             SerializedMovements = Movement.FromString(Movements);
         }
 
-        public void SetAttackType() {
-            if (AttackType.IsNullOrEmpty() || AttackType == "0") {
+        public void SetAttackType()
+        {
+            if (AttackType.IsNullOrEmpty() || AttackType == "0")
+            {
                 AttackTypeEnum = global::AttackType.None;
                 return;
             }
 
             AttackType = AttackType.Replace(" ", "");
 
-            if (attackTypeMapping.TryGetValue(AttackType, out AttackType enumValue)) {
+            if (attackTypeMapping.TryGetValue(AttackType, out AttackType enumValue))
+            {
                 AttackTypeEnum = enumValue;
             }
-            else {
+            else
+            {
                 throw new ArgumentException($"Invalid Attack Type: {AttackType}");
             }
         }
@@ -104,11 +117,13 @@ public class CardInfoSerialized {
 }
 
 [Serializable, CreateAssetMenu(fileName = "Card_Data", menuName = "Card_Data")]
-public class CardsDataBase : ScriptableObject {
+public class CardsDataBase : ScriptableObject
+{
     public CardInfoSerialized cardDataBase;
 
     [Button]
-    public void DownloadData() {
+    public void DownloadData()
+    {
         Downloader.Instance.LoadInfo(this);
     }
 }

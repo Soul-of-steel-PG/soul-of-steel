@@ -7,13 +7,16 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class Movement {
+public class Movement
+{
     [Serializable]
-    public class MovementInfo {
+    public class MovementInfo
+    {
         public int Steps;
         public string Direction;
 
-        public MovementInfo(int steps, string direction) {
+        public MovementInfo(int steps, string direction)
+        {
             Steps = steps;
             Direction = direction;
         }
@@ -23,7 +26,8 @@ public class Movement {
     public string fullStrings;
     public List<int> degrees;
 
-    public static List<Movement> FromString(string movementString) {
+    public static List<Movement> FromString(string movementString)
+    {
         List<Movement> movements = new List<Movement>();
         string[] lines = movementString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -36,7 +40,8 @@ public class Movement {
         return movements;
     }
 
-    private static Movement FromStringSingleLine(string movementString) {
+    private static Movement FromStringSingleLine(string movementString)
+    {
         List<int> steps = new() { };
         List<string> direction = new() { };
         List<int> degrees = new() { -1 };
@@ -70,6 +75,7 @@ public class Movement {
                     }
                 }
                 else {
+                    Debug.Log($"local part {localPart}");
                     string stepsString = localPart.Substring(0, 1);
                     Int32.TryParse(stepsString, out int numberInt);
                     steps.Add(numberInt);
@@ -83,7 +89,7 @@ public class Movement {
             List<MovementInfo> stepsDictionary = new List<MovementInfo>();
 
             for (int i = 0; i < steps.Count; i++) {
-                stepsDictionary.Add(new MovementInfo(steps[0], direction[0]));
+                stepsDictionary.Add(new MovementInfo(steps[i], direction[i]));
             }
 
             return new Movement {

@@ -4,12 +4,14 @@ using System.Linq;
 using Sirenix.Utilities;
 using UnityEngine;
 
-public class RechargePhase : Phase {
+public class RechargePhase : Phase
+{
     private bool _allCardSelected;
     private bool _allEffectsDone;
     private List<CardView> _effectCards;
 
-    public RechargePhase(IMatchView matchView) : base(matchView) {
+    public RechargePhase(IMatchView matchView) : base(matchView)
+    {
         GameManager.Instance.OnCardSelectedEvent += CardSelected;
         GameManager.Instance.OnCardSelectingFinishedEvent += AllCardsSelected;
         EffectManager.Instance.OnAllEffectsFinishedEvent += SetEffectTurn;
@@ -17,15 +19,21 @@ public class RechargePhase : Phase {
         _effectCards = new List<CardView>();
     }
 
-    public override IEnumerator Start() {
+    public override IEnumerator Start()
+    {
         matchView.SetCurrentPhaseText("recharge phase");
 
+        List<CardType> cardTypes = new() {
+            CardType.CampEffect,
+            CardType.Hacking
+        };
+
         // selecting cards
-        GameManager.Instance.playerList.ForEach(player => player.SelectCards(CardType.CampEffect, 1));
+        GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1));
 
         while (!_allCardSelected) {
             bool localAllSelected = true;
-            foreach (PlayerView player in GameManager.Instance.playerList) {
+            foreach (PlayerView player in GameManager.Instance.PlayerList) {
                 if (!player.PlayerController.GetCardsSelected()) {
                     localAllSelected = false;
                     break;
@@ -37,12 +45,12 @@ public class RechargePhase : Phase {
             yield return null;
         }
 
-        GameManager.Instance.playerList.ForEach(player => player.SelectCards(CardType.CampEffect, 1, false));
+        GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1, false));
 
         // doing cards effects        
-        EffectManager.Instance.effectTurn = GameManager.Instance.currentPriority;
+        EffectManager.Instance.effectTurn = GameManager.Instance.CurrentPriority;
 
-        foreach (PlayerView p in GameManager.Instance.playerList) {
+        foreach (PlayerView p in GameManager.Instance.PlayerList) {
             p.PlayerController.SetAllEffectsDone(false);
             p.SetEffectTurnDone(false);
         }
@@ -52,7 +60,7 @@ public class RechargePhase : Phase {
                 GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() !=
                 EffectManager.Instance.effectTurn) {
                 bool localAllEffectsDone = true;
-                foreach (PlayerView p in GameManager.Instance.playerList) {
+                foreach (PlayerView p in GameManager.Instance.PlayerList) {
                     if (!p.PlayerController.GetAllEffectsDone()) {
                         localAllEffectsDone = false;
                     }
@@ -64,10 +72,11 @@ public class RechargePhase : Phase {
                 yield return null;
             }
             else {
-                PlayerView player = GameManager.Instance.playerList.Find(p =>
-                    p.PlayerController.GetPlayerId() == EffectManager.Instance.effectTurn);
+                PlayerView player = GameManager.Instance.PlayerList.Find(p =>
+                    p.PlayerController.GetPlayerId() == EffectManager.Instance.effectTurn) as PlayerView;
 
                 player.SetMyEffectTurn(true);
+
 
                 foreach (CardView card in _effectCards) {
                     card.DoEffect(GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId());
@@ -101,7 +110,8 @@ public class RechargePhase : Phase {
         EffectManager.Instance.OnAllEffectsFinishedEvent -= SetEffectTurn;
     }
 
-    private void CardSelected(CardView card, bool selected) {
+    private void CardSelected(PlayerView playerView, CardView card, bool selected)
+    {
         if (selected) _effectCards.Add(card);
         else _effectCards.Remove(card);
 
@@ -109,16 +119,14 @@ public class RechargePhase : Phase {
         GameManager.Instance.OnSelectingFinished();
     }
 
-    private void AllCardsSelected() {
+    private void AllCardsSelected()
+    {
         GameManager.Instance.LocalPlayerInstance.PlayerController.SetCardsSelected(_effectCards.Count >= 1);
     }
 
-    public override IEnumerator End() {
-        yield break;
-    }
-
-    private void SetEffectTurn() {
+    private void SetEffectTurn()
+    {
         EffectManager.Instance.effectTurn =
-            (EffectManager.Instance.effectTurn % GameManager.Instance.playerList.Count) + 1;
+            (EffectManager.Instance.effectTurn % GameManager.Instance.PlayerList.Count) + 1;
     }
 }

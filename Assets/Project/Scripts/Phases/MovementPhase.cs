@@ -13,19 +13,21 @@ public class MovementPhase : Phase {
 
     public override IEnumerator Start() {
         matchView.SetCurrentPhaseText("movement phase");
+        _allMovementDone = false;
+        _allMovementsSelected = false;
 
-        foreach (PlayerView p in GameManager.Instance.playerList) {
+        foreach (PlayerView p in GameManager.Instance.PlayerList) {
             p.PlayerController.SetMovementDone(false);
             p.SetMovementTurnDone(false);
             p.SetMyMovementTurn(false);
             p.PlayerController.SetMovementSelected(false);
         }
 
-        GameManager.Instance.playerList.ForEach(p => p.SelectMovement());
+        GameManager.Instance.PlayerList.ForEach(p => p.SelectMovement());
 
         while (!_allMovementsSelected) {
             bool localAllMovementSelected = true;
-            foreach (PlayerView player in GameManager.Instance.playerList) {
+            foreach (PlayerView player in GameManager.Instance.PlayerList) {
                 if (!player.PlayerController.GetMovementSelected()) {
                     localAllMovementSelected = false;
                     break;
@@ -38,7 +40,7 @@ public class MovementPhase : Phase {
         }
 
         GameManager.Instance.OnAllMovementSelected();
-        GameManager.Instance.movementTurn = GameManager.Instance.currentPriority;
+        GameManager.Instance.movementTurn = GameManager.Instance.CurrentPriority;
 
 
         while (!_allMovementDone) {
@@ -46,7 +48,7 @@ public class MovementPhase : Phase {
                 GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() !=
                 GameManager.Instance.movementTurn) {
                 bool localAllMovementDone = true;
-                foreach (PlayerView p in GameManager.Instance.playerList) {
+                foreach (PlayerView p in GameManager.Instance.PlayerList) {
                     if (!p.PlayerController.GetMovementDone()) {
                         localAllMovementDone = false;
                     }
@@ -59,8 +61,8 @@ public class MovementPhase : Phase {
                 yield return null;
             }
             else {
-                PlayerView player = GameManager.Instance.playerList.Find(p =>
-                    p.PlayerController.GetPlayerId() == GameManager.Instance.movementTurn);
+                PlayerView player = GameManager.Instance.PlayerList.Find(p =>
+                    p.PlayerController.GetPlayerId() == GameManager.Instance.movementTurn) as PlayerView;
 
                 player.SetMyMovementTurn(true);
 
@@ -90,6 +92,6 @@ public class MovementPhase : Phase {
 
     public void SetTurn() {
         GameManager.Instance.movementTurn =
-            (GameManager.Instance.movementTurn % GameManager.Instance.playerList.Count) + 1;
+            (GameManager.Instance.movementTurn % GameManager.Instance.PlayerList.Count) + 1;
     }
 }

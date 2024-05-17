@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IArmCardController : IEquipmentCardController {
+public interface IArmCardController : IEquipmentCardController
+{
     void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
         int damage, AttackType attackType, int attackDistance, int attackArea, Sprite imageSource, CardType type);
 
@@ -10,7 +11,8 @@ public interface IArmCardController : IEquipmentCardController {
     int GetDamage();
 }
 
-public class ArmCardController : EquipmentCardController, IArmCardController {
+public class ArmCardController : EquipmentCardController, IArmCardController
+{
     private readonly IArmCardView _view;
 
     private int _damage;
@@ -20,12 +22,14 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
 
     private List<Vector2> currentCellsShaded;
 
-    public ArmCardController(IArmCardView view) : base(view) {
+    public ArmCardController(IArmCardView view) : base(view)
+    {
         _view = view;
     }
 
     public void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-        int damage, AttackType attackType, int attackDistance, int attackArea, Sprite imageSource, CardType type) {
+        int damage, AttackType attackType, int attackDistance, int attackArea, Sprite imageSource, CardType type)
+    {
         _damage = damage;
         _attackType = attackType;
         _attackDistance = attackDistance;
@@ -41,14 +45,16 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
             _attackType = AttackType.StraightLine;
         }
 
+        //Debug.Log($"ArmCardController {cardName} with id {id}");
         base.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
     }
 
-    public void SelectAttack() {
+    public void SelectAttack()
+    {
         currentCellsShaded = new List<Vector2>();
         currentCellsShaded.Clear();
         PlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
-        BoardView currentBoardView = GameManager.Instance.boardView;
+        IBoardView currentBoardView = GameManager.Instance.BoardView;
 
         int direction = currentPlayer.PlayerController.GetCurrentDegrees();
         Vector2 cellToSelect = currentPlayer.PlayerController.GetCurrentCell();
@@ -76,13 +82,39 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
                         Mathf.Clamp(cellToSelect.y, 0, currentBoardView.BoardController.GetBoardCount() - 1));
 
                     currentCellsShaded.Add(index);
-                    GameManager.Instance.boardView.SetBoardStatusCellType(index, CellType.Shady);
+                    GameManager.Instance.BoardView.SetBoardStatusCellType(index, CellType.Shady);
                 }
 
                 GameManager.Instance.OnCellClickedEvent += currentPlayer.PlayerController.DoAttack;
 
                 break;
             default:
+                for (int i = 0; i < _attackDistance; i++) {
+                    switch (direction) {
+                        case 180:
+                            cellToSelect.x -= 1;
+                            break;
+                        case 0:
+                            cellToSelect.x += 1;
+                            break;
+                        case 90:
+                            cellToSelect.y -= 1;
+                            break;
+                        case 270:
+                            cellToSelect.y += 1;
+                            break;
+                    }
+
+                    Vector2 index = new(
+                        Mathf.Clamp(cellToSelect.x, 0, currentBoardView.BoardController.GetBoardCount() - 1),
+                        Mathf.Clamp(cellToSelect.y, 0, currentBoardView.BoardController.GetBoardCount() - 1));
+
+                    currentCellsShaded.Add(index);
+                    GameManager.Instance.BoardView.SetBoardStatusCellType(index, CellType.Shady);
+                }
+
+                GameManager.Instance.OnCellClickedEvent += currentPlayer.PlayerController.DoAttack;
+
                 Debug.Log($"type not implemented {_attackType} card name: {CardName}");
                 break;
         }
@@ -90,13 +122,29 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
         GameManager.Instance.OnLocalAttackDoneEvent += UnShadeCells;
     }
 
-    public int GetDamage() {
+    public int GetDamage()
+    {
         return _damage;
     }
 
-    public void UnShadeCells() {
+    public void UnShadeCells()
+    {
         foreach (Vector2 cellIndex in currentCellsShaded) {
-            GameManager.Instance.boardView.SetBoardStatusCellType(cellIndex, CellType.Normal);
+            if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
+                .GetIsMined()) {
+                GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Mined);
+            }
+            else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
+                     .GetIsBarrier()) {
+                GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Barrier);
+            }
+            else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
+                     .GetIsTower()) {
+                GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Tower);
+            }
+            else {
+                GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Normal);
+            }
         }
 
         GameManager.Instance.OnLocalAttackDoneEvent -= UnShadeCells;

@@ -19,18 +19,18 @@ public class MineEffectController : EffectController, IMineEffectController {
 
         EffectManager.Instance.OnCellsSelectedEvent += StopSettingMines;
         EffectManager.Instance.OnSelectedCellEvent += SetMines;
-        GameManager.Instance.playerList.Find(p => p.PlayerController.GetPlayerId() == originId)
+        (GameManager.Instance.PlayerList.Find(p => p.PlayerController.GetPlayerId() == originId) as PlayerView)
             .SelectCells(_minesAmount);
     }
 
     private void SetMines(Vector2 index, bool select) {
-        if (CellType.Normal != GameManager.Instance.boardView.GetBoardStatus()[(int)index.y][(int)index.x]
+        if (CellType.Normal != GameManager.Instance.BoardView.GetBoardStatus()[(int)index.y][(int)index.x]
                 .CellController.GetCellType()) return;
-        GameManager.Instance.boardView.SetBoardStatusCellType(index, select ? CellType.Mined : CellType.Normal);
+        GameManager.Instance.BoardView.SetBoardStatusCellType(index, select ? CellType.Mined : CellType.Normal);
 
         if (!GameManager.Instance.testing) {
             GameManager.Instance.LocalPlayerInstance.photonView.RPC("RpcPutMines",
-                RpcTarget.AllBuffered, (int)index.y, (int)index.x);
+                RpcTarget.AllBuffered, (int)index.y, (int)index.x, true);
         }
     }
 

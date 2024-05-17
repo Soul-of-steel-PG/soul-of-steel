@@ -19,7 +19,7 @@ public class PlayerCardsInfo : ScriptableObject {
         foreach (int cardId in cardIds) {
             CardInfoSerialized.CardInfoStruct card =
                 GameManager.Instance.cardDataBase.cardDataBase.Sheet1.Find(c => c.Id == cardId);
-
+            //Debug.Log($"{card.CardName} with id {card.Id}");
             playerCards.Add(card);
         }
     }

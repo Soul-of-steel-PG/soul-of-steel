@@ -2,23 +2,28 @@
 using UnityEngine;
 using System.Collections;
 
-public interface IPhase {
+public interface IPhase
+{
     IEnumerator Start();
-    IEnumerator End();
 }
 
-public abstract class Phase : IPhase {
+public abstract class Phase : IPhase
+{
     protected readonly IMatchView matchView;
 
-    protected Phase(IMatchView matchView) {
+    protected Phase(IMatchView matchView)
+    {
         this.matchView = matchView;
+        GameManager.Instance.CurrenPhase = this;
     }
 
-    public virtual IEnumerator Start() {
+    public virtual IEnumerator Start()
+    {
         yield break;
     }
 
-    public virtual IEnumerator End() {
-        yield break;
+    public virtual void End()
+    {
+        matchView.StopPhase(this);
     }
 }

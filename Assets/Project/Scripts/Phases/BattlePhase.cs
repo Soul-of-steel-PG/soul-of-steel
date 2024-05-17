@@ -14,9 +14,9 @@ public class BattlePhase : Phase {
 
         yield return new WaitForSeconds(1);
 
-        GameManager.Instance.attackTurn = GameManager.Instance.currentPriority;
+        GameManager.Instance.attackTurn = GameManager.Instance.CurrentPriority;
 
-        foreach (PlayerView p in GameManager.Instance.playerList) {
+        foreach (PlayerView p in GameManager.Instance.PlayerList) {
             p.SetAttackDone(false);
         }
 
@@ -25,7 +25,7 @@ public class BattlePhase : Phase {
                 GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() !=
                 GameManager.Instance.attackTurn) {
                 bool localAttackDoneSelected = true;
-                foreach (PlayerView player in GameManager.Instance.playerList) {
+                foreach (PlayerView player in GameManager.Instance.PlayerList) {
                     if (!player.GetAttackDone()) {
                         localAttackDoneSelected = false;
                         break;
@@ -43,7 +43,7 @@ public class BattlePhase : Phase {
                     yield return null;
                 }
 
-                GameManager.Instance.ValidateHealthStatus();
+                // if (!GameManager.Instance.ValidateHealthStatus()) yield break;
 
                 if (!GameManager.Instance.testing)
                     GameManager.Instance.LocalPlayerInstance.photonView.RPC("RpcSetAttackTurn", RpcTarget.AllBuffered);
