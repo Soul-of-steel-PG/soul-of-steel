@@ -14,6 +14,12 @@ public interface IBoardView {
     GameObject InstantiateCellView();
     List<List<CellView>> GetBoardStatus();
     void SetBoardStatus(List<List<CellView>> board);
+    IBoardController BoardController { get; }
+    void SetBoardStatusCellType(Vector2 index, CellType cellType);
+    Vector3 GetCellPos(Vector2 index);
+
+    void ShowAllCells();
+    void HideAllCells();
 }
 
 public class BoardView : MonoBehaviour, IBoardView {
@@ -35,7 +41,7 @@ public class BoardView : MonoBehaviour, IBoardView {
     }
 
     private void Start() {
-        GameManager.Instance.boardView = this;
+        GameManager.Instance.BoardView = this;
     }
 
     public Transform GetTransform() {
@@ -83,6 +89,32 @@ public class BoardView : MonoBehaviour, IBoardView {
 
     public void SetBoardStatusCellType(Vector2 index, CellType cellType) {
         _boardStatus[(int)index.y][(int)index.x].CellController.SetType(cellType);
+    }
+
+    [Button("HideAllCells")]
+    public void HideAllCells() 
+    {
+        int boardSize = BoardController.GetBoardCount();
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                _boardStatus[i][j].CellController.HideCell();
+            }
+        }
+    }
+
+    [Button("ShowAllCells")]
+    public void ShowAllCells()
+    {
+        int boardSize = BoardController.GetBoardCount();
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                _boardStatus[i][j].CellController.ShowCell();
+            }
+        }
     }
 
     public void SetBoardStatusInPlaymode() {

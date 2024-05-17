@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -9,21 +10,29 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public interface IPlayerView {
+public interface IPlayerView
+{
     GameObject GetHandCardsPanel();
     void CleanHandsPanel();
-    CardView AddCardToPanel(CardType cardType);
+    CardView AddCardToPanel(CardType cardType, bool inHand = false);
     void InitAddCards(int amount);
     PhotonView GetPv();
-    void SelectCards(CardType type, int amount, bool setSelecting = true);
+    void SelectCards(List<CardType> type, int amount, bool setSelecting = true);
     void ClearPanel(Transform panel);
     PlayerCardsInfo GetDeckInfo();
     bool GetAttackDone();
     void SetAttackDone(bool attackDone);
+    void DestroyGO(GameObject go);
+    IPlayerController PlayerController { get; }
+    void MoveToCell(Vector2 nextCell);
+    void Rotate(int currentDegrees);
+    void DrawCards(int amount, bool fullDraw);
+    void SelectMovement();
 }
 
 [Serializable]
-public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable {
+public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
+{
     [SerializeField] private PhotonView pv;
     [ShowInInspector] public PlayerCardsInfo _deckInfo;
     private PlayerMovement _playerMovement;
@@ -38,7 +47,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     private bool _attackDone;
 
     public GameObject HandCardsPanel {
-        get { return _handCardsPanel ??= GameManager.Instance.handPanel.gameObject; }
+        get { return _handCardsPanel ??= GameManager.Instance.HandPanel.GetGo(); }
     }
 
     [SerializeField] private GameObject equipmentCardPrefab;
@@ -46,6 +55,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     [SerializeField] private GameObject effectCardPrefab;
     [SerializeField] private GameObject legsCardPrefab;
     [SerializeField] private GameObject armCardPrefab;
+    [SerializeField] private GameObject chestCardPrefab;
 
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private Image playerDirection;
@@ -54,27 +64,41 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     private IPlayerView _playerViewImplementation;
 
     public IPlayerController PlayerController {
-        get { return _playerController ??= new PlayerController(this); }
+        get { return _playerController ??= new PlayerController(this, GameManager.Instance); }
     }
 
-    private void Awake() {
+    public void MoveToCell(Vector2 nextCell)
+    {
+        _playerMovement.MoveToCell(nextCell);
+    }
+
+    public void Rotate(int currentDegrees)
+    {
+        _playerMovement.Rotate(transform, currentDegrees);
+    }
+
+    private void Awake()
+    {
         GameManager.Instance.OnGameStartedEvent += TurnOnSprite;
         pv = GetComponent<PhotonView>();
         _playerMovement = GetComponent<PlayerMovement>();
-        GameManager.Instance.playerList.Add(this);
-        if (pv.IsMine) {
+        GameManager.Instance.AddPlayerToThePlayerList(this);
+        if (pv.IsMine)
+        {
             GameManager.Instance.LocalPlayerInstance = this;
         }
 
-        PlayerController.SetPlayerId(GameManager.Instance.testing ? 0 : pv.Owner.ActorNumber);
+        PlayerController.SetPlayerId(GameManager.Instance.testing ? 1 : pv.Owner.ActorNumber);
     }
 
-    private void Start() {
+    private void Start()
+    {
         if (GameManager.Instance.testing) TurnOnSprite();
         GameManager.Instance.OnPrioritySetEvent += ReceivePriority;
     }
 
-    public void TurnOnSprite() {
+    public void TurnOnSprite()
+    {
         TryGetComponent(out Image image);
         image.enabled = true;
         playerName.gameObject.SetActive(true);
@@ -84,44 +108,91 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
         SetCardsInfo();
     }
 
-    public GameObject GetHandCardsPanel() {
+    public GameObject GetHandCardsPanel()
+    {
         return HandCardsPanel;
     }
 
-    public void CleanHandsPanel() {
-        foreach (Transform t in HandCardsPanel.transform) {
+    public void CleanHandsPanel()
+    {
+        foreach (Transform t in HandCardsPanel.transform)
+        {
             Destroy(t.gameObject);
         }
     }
 
-    public CardView AddCardToPanel(CardType cardType) {
+    public CardView AddCardToPanel(CardType cardType, bool inHand = false)
+    {
         GameObject prefab = null;
         Transform parent = null;
 
-        switch (cardType) {
+        switch (cardType)
+        {
             case CardType.Pilot:
+                if (pv.IsMine)
+                {
+                    return GameManager.Instance.LocalPilotCardView;
+                }
+
                 prefab = pilotCardPrefab;
                 break;
             case CardType.Weapon:
             case CardType.Arm:
                 prefab = armCardPrefab;
-                parent = pv.IsMine
-                    ? GameManager.Instance.myEquipmentPanel.transform
-                    : GameManager.Instance.enemyEquipmentPanel.transform;
+                if (inHand)
+                {
+                    parent = HandCardsPanel.transform;
+                }
+                else
+                {
+                    parent = pv.IsMine
+                        ? GameManager.Instance.myEquipmentPanel.transform
+                        : GameManager.Instance.enemyEquipmentPanel.transform;
+                }
+
                 break;
             case CardType.Armor:
             case CardType.Chest:
+                prefab = chestCardPrefab;
+                if (inHand)
+                {
+                    parent = HandCardsPanel.transform;
+                }
+                else
+                {
+                    parent = pv.IsMine
+                        ? GameManager.Instance.myEquipmentPanel.transform
+                        : GameManager.Instance.enemyEquipmentPanel.transform;
+                }
+
+                break;
             case CardType.Generator:
                 prefab = equipmentCardPrefab;
-                parent = pv.IsMine
-                    ? GameManager.Instance.myEquipmentPanel.transform
-                    : GameManager.Instance.enemyEquipmentPanel.transform;
+                if (inHand)
+                {
+                    parent = HandCardsPanel.transform;
+                }
+                else
+                {
+                    parent = pv.IsMine
+                        ? GameManager.Instance.myEquipmentPanel.transform
+                        : GameManager.Instance.enemyEquipmentPanel.transform;
+                }
+
                 break;
             case CardType.Legs:
                 prefab = legsCardPrefab;
-                parent = pv.IsMine
-                    ? GameManager.Instance.myEquipmentPanel.transform
-                    : GameManager.Instance.enemyEquipmentPanel.transform;
+                if (inHand)
+                {
+                    parent = HandCardsPanel.transform;
+                }
+                else
+                {
+                    parent = pv.IsMine
+                        ? GameManager.Instance.myEquipmentPanel.transform
+                        : GameManager.Instance.enemyEquipmentPanel.transform;
+                }
+
                 break;
             case CardType.CampEffect:
             case CardType.Hacking:
@@ -138,103 +209,124 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
 
         GO.TryGetComponent(out RectTransform rt);
         rt.sizeDelta = new Vector2(250, 350);
-        if (cardType != CardType.Legs && cardType != CardType.Arm && cardType != CardType.Weapon)
+        if (inHand)
+        {
             rt.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        }
 
         GO.TryGetComponent(out CardView card);
         GO.SetActive(pv.IsMine);
         return card;
     }
 
-    public void InitAddCards(int amount) {
+    public void InitAddCards(int amount)
+    {
         StartCoroutine(PlayerController.AddCards(amount));
     }
 
-    public PhotonView GetPv() {
+    public PhotonView GetPv()
+    {
         return pv;
     }
 
-    public void ClearPanel(Transform panel) {
-        foreach (Transform t in panel) {
+    public void ClearPanel(Transform panel)
+    {
+        foreach (Transform t in panel)
+        {
             Destroy(t.gameObject);
         }
     }
 
-    public PlayerCardsInfo GetDeckInfo() {
+    public PlayerCardsInfo GetDeckInfo()
+    {
         return _deckInfo;
     }
 
-    public bool GetAttackDone() {
+    public bool GetAttackDone()
+    {
         return _attackDone;
     }
 
-    public void SetAttackDone(bool attackDone) {
+    public void SetAttackDone(bool attackDone)
+    {
         _attackDone = attackDone;
     }
 
-    public void SetCardsInfo() {
-        if (pv.IsMine) {
+    public void DestroyGO(GameObject go)
+    {
+        Destroy(go);
+    }
+
+    public void SetCardsInfo()
+    {
+        if (pv.IsMine)
+        {
             int actorNumber = GameManager.Instance.testing ? 0 : pv.Owner.ActorNumber;
             int count = GameManager.Instance.cardDataBase.cardDataBase.Sheet1.Count;
             int halfCount = count / 2;
 
             int startIndex = actorNumber == 1 ? 0 : halfCount;
 
-            Debug.Log($" actor number {actorNumber}");
+            Debug.Log($"actor numberr {actorNumber}");
             _deckInfo = Resources.Load<PlayerCardsInfo>($"PlayerCards{actorNumber}");
             _deckInfo.playerCards.Clear();
 
-            if (!GameManager.Instance.testing) {
-                // _deckInfo.SetPlayerCards(Enumerable
-                //     .Range(startIndex, actorNumber == 1 ? halfCount : count - startIndex)
-                //     .ToList());
-
-                // _deckInfo = Resources.Load<PlayerCardsInfo>($"PlayerCards0");
-                _deckInfo.SetPlayerCards(new List<int> { 0, 0, 0, 0, 0, 0, 0, 33, 32, 18 });
+            if (!GameManager.Instance.testing)
+            {
+                _deckInfo.SetPlayerCards(new List<int> { 30, 36, 34, 35, 23, 6, 0, 35, 32, 20, 0, 35, 23, 35, 37 });
             }
-            else {
-                // _deckInfo = Resources.Load<PlayerCardsInfo>($"PlayerCards0");
-                _deckInfo.SetPlayerCards(new List<int> { 0, 0, 0, 0, 0, 0, 0, 33, 32, 18 });
+            else
+            {
+                _deckInfo.SetPlayerCards(new List<int> { 30, 36, 34, 35, 23, 6, 0, 35, 32, 20, 0, 35, 23, 35, 37 });
             }
         }
     }
 
-    private void OnDestroy() {
-        if (GameManager.HasInstance()) {
+    private void OnDestroy()
+    {
+        if (GameManager.HasInstance())
+        {
             GameManager.Instance.OnPrioritySetEvent -= ReceivePriority;
             GameManager.Instance.OnGameStartedEvent -= TurnOnSprite;
         }
     }
 
-    public void DrawCards(int amount, bool fullDraw) {
+    public void DrawCards(int amount, bool fullDraw)
+    {
         PlayerController.DrawCards(amount, fullDraw);
     }
 
-    public void SelectCards(CardType type, int amount, bool setSelecting = true) {
+    public void SelectCards(List<CardType> type, int amount, bool setSelecting = true)
+    {
         PlayerController.SelectCards(type, amount, setSelecting);
     }
 
-    public void SelectMovement() {
+    public void SelectMovement()
+    {
         PlayerController.SelectMovement();
     }
 
-    public void SelectAttack() {
+    public void SelectAttack()
+    {
         PlayerController.SelectAttack();
     }
 
-    public void ReceivePriority(int priority) {
+    public void ReceivePriority(int priority)
+    {
         _receivePriority = true;
     }
 
     // players communication
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting && pv.IsMine) {
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting && pv.IsMine)
+        {
             // selecting cards
             stream.SendNext(PlayerController.GetCardsSelected());
             stream.SendNext(PlayerController.GetPlayerId());
 
             //priority
-            stream.SendNext(GameManager.Instance.currentPriority);
+            stream.SendNext(GameManager.Instance.CurrentPriority);
 
             //effects
             stream.SendNext(EffectManager.Instance.effectTurn);
@@ -246,8 +338,10 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
 
             //attack
             stream.SendNext(_attackDone);
+            stream.SendNext(PlayerController.GetCurrenHealth());
         }
-        else if (stream.IsReading) {
+        else if (stream.IsReading)
+        {
             bool receivedSelection = (bool)stream.ReceiveNext();
             int receivedPlayerId = (int)stream.ReceiveNext();
 
@@ -260,77 +354,120 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
             bool receivedMovementDone = (bool)stream.ReceiveNext();
 
             bool receivedAttackDone = (bool)stream.ReceiveNext();
+            int receivedHealth = (int)stream.ReceiveNext();
 
-            foreach (PlayerView player in GameManager.Instance.playerList) {
-                if (receivedPlayerId == player.pv.Owner.ActorNumber) {
+            foreach (PlayerView player in GameManager.Instance.PlayerList)
+            {
+                if (receivedPlayerId == player.pv.Owner.ActorNumber)
+                {
                     player.PlayerController.SetCardsSelected(receivedSelection);
                     player.PlayerController.SetAllEffectsDone(receivedAllEffectsDone);
                     player.PlayerController.SetMovementSelected(receivedMovementSelected);
                     player.PlayerController.SetMovementDone(receivedMovementDone);
                     player.SetAttackDone(receivedAttackDone);
+                    player.PlayerController.SetHealth(receivedHealth);
                 }
             }
 
             if (!_myEffectTurn) EffectManager.Instance.effectTurn = receivedEffectTurn;
 
-            if (!PhotonNetwork.IsMasterClient && _receivePriority) {
-                GameManager.Instance.currentPriority = receivedPriority;
+            if (!PhotonNetwork.IsMasterClient && _receivePriority)
+            {
+                GameManager.Instance.CurrentPriority = receivedPriority;
                 _receivePriority = false;
             }
         }
     }
 
-    public void SelectCells(int amount) {
+    public void SelectCells(int amount)
+    {
         StartCoroutine(PlayerController.SelectCells(amount));
     }
 
-    public void SetMyEffectTurn(bool myEffectTurn) {
+    public void SetMyEffectTurn(bool myEffectTurn)
+    {
         _myEffectTurn = myEffectTurn;
     }
 
-    public void SetMyMovementTurn(bool myMovementTurn) {
+    public void SetMyMovementTurn(bool myMovementTurn)
+    {
         _myMovementTurn = myMovementTurn;
     }
 
-    public void SetEffectTurnDone(bool effectTurnDone) {
+    public void SetEffectTurnDone(bool effectTurnDone)
+    {
         _effectTurnDone = effectTurnDone;
     }
 
-    public bool GetEffectTurnDone() {
+    public bool GetEffectTurnDone()
+    {
         return _effectTurnDone;
     }
 
-    public void SetMovementTurnDone(bool movementTurnDone) {
+    public void SetMovementTurnDone(bool movementTurnDone)
+    {
         _movementTurnDone = movementTurnDone;
     }
 
-    public bool GetMovementTurnDone() {
+    public bool GetMovementTurnDone()
+    {
         return _movementTurnDone;
     }
 
-    public void DoMove() {
+    public void DoMove()
+    {
         PlayerController.DoMovement();
     }
 
     [PunRPC]
-    public void RpcSetTurn() {
+    public void RpcSetTurn()
+    {
         GameManager.Instance.movementTurn =
-            (GameManager.Instance.movementTurn % GameManager.Instance.playerList.Count) + 1;
+            (GameManager.Instance.movementTurn % GameManager.Instance.PlayerList.Count) + 1;
     }
 
     [PunRPC]
-    public void RpcSetAttackTurn() {
+    public void RpcSetAttackTurn()
+    {
         GameManager.Instance.attackTurn =
-            (GameManager.Instance.attackTurn % GameManager.Instance.playerList.Count) + 1;
+            (GameManager.Instance.attackTurn % GameManager.Instance.PlayerList.Count) + 1;
     }
 
     [PunRPC]
-    public void RpcReceivedDamage(int damage, int localPlayerId) {
+    public void RpcReceivedDamage(int damage, int localPlayerId)
+    {
         PlayerController.ReceivedDamage(damage, localPlayerId);
     }
 
     [PunRPC]
-    public void RpcPutMines(int x, int y) {
-        GameManager.Instance.boardView.GetBoardStatus()[x][y].CellController.SetType(CellType.Mined);
+    public void RpcPutMines(int x, int y, bool mined)
+    {
+        GameManager.Instance.BoardView.GetBoardStatus()[x][y].CellController
+            .SetType(mined ? CellType.Mined : CellType.Normal);
+    }
+
+    [PunRPC]
+    public void RpcPutBarrier(int x, int y, bool barrier)
+    {
+        GameManager.Instance.BoardView.GetBoardStatus()[x][y].CellController
+            .SetType(barrier ? CellType.Barrier : CellType.Normal);
+    }
+
+    [PunRPC]
+    public void RpcShowBoard(int playerID)
+    {
+        if (playerID != GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId())
+        {
+            GameManager.Instance.BoardView.ShowAllCells();
+        }
+    }
+
+    [PunRPC]
+    public void RpcHideBoard(int playerID)
+    {
+        if (playerID != GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId())
+        {
+            GameManager.Instance.BoardView.HideAllCells();
+        }
     }
 }
