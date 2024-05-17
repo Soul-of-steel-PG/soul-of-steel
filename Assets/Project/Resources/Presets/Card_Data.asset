@@ -1,0 +1,829 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ca177fc56a44805945043fb9c68dde3, type: 3}
+  m_Name: Card_Data
+  m_EditorClassIdentifier: 
+  cardDataBase:
+    Sheet1:
+    - Id: 0
+      CardName: Franja Minada de Tulik
+      Type: Campo
+      TypeEnum: 3
+      Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante
+        a una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad
+        cruzar sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el
+        jugador inicial puede colocar una mina en el cuadrante a una distancia mayor
+        \nde tres cuadors de cualquier unidad"
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 1
+      CardName: Campos Gravitacionales Racksianos
+      Type: Campo
+      TypeEnum: 3
+      Description: "Toda unidad que se mueva atravez de este cuadrante solo puede
+        mover el primer cuadro \nde la maniobra seleccionada a menos que page 2 de
+        energias."
+      Cost: 3
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 2
+      CardName: 'Worm port '
+      Type: Campo
+      TypeEnum: 3
+      Description: "Puedes pagar 2 energias para selecciona al azar una de tus maniobras
+        de movimiento y \nejecutala este efecto solo se puede usar una vez por turno
+        durante tu fase de mantenimiento"
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 3
+      CardName: Tuneles de Topos
+      Type: Campo
+      TypeEnum: 3
+      Description: "Al Acticar esta carta coloca 4 obstaculos de nombre trinchera
+        de 2x2 sobre el cuadrante, \nsi una unidad se encuentra sobre una trinchera
+        recibe 2 puntos de da\xF1o menos al ser atacado"
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 4
+      CardName: 'Lagunas Acidas '
+      Type: Campo
+      TypeEnum: 3
+      Description: "Durante tu fase de movimiento recibes un punto de da\xF1os sobre
+        todas tus mejoras"
+      Cost: 2
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 5
+      CardName: Plataformas aereas
+      Type: Campo
+      TypeEnum: 3
+      Description: "Coloca 5 plataformas aereas de 4x4 sobre el cuadrante, cualquier
+        maniobra que no termine \nsobre una plataforma es cancelada a menos que tengas
+        la habilidad de volar, si al activarse esta \ncarta estas fuera de una plataforma
+        aerea eres movido a la plataforma aerea mas cercana y \npierdes tu ataque
+        este turno"
+      Cost: 5
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 6
+      CardName: Circuito De Carreras de Formula R
+      Type: Campo
+      TypeEnum: 3
+      Description: Debes ejecutar tu maniobra seleccionada dos veces
+      Cost: 1
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 7
+      CardName: Ciber Camuflaje
+      Type: hackeo
+      TypeEnum: 4
+      Description: "Juega esta carta durante tu revelacion de maniobra, manten tu
+        selector de maniobra \nboca abajo hasta que el primer ataque sea declarado
+        y ejecuta tu maniobra inmediatamente."
+      Cost: 2
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 0
+      AttackType: 0
+    - Id: 8
+      CardName: Balisa Cuantica
+      Type: hackeo
+      TypeEnum: 4
+      Description: Muestra 4 cartas del tope del deck y lleva una a tu mano y retorna
+        las demas al fondo del deck
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 0
+      AttackType: 0
+    - Id: 9
+      CardName: Maniobras Evasivas
+      Type: hackeo
+      TypeEnum: 4
+      Description: Mueve una de tus unidades hasta 3 cuadros a la derecha o izquierda
+      Cost: 4
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 10
+      CardName: Rematerializacion Atomica
+      Type: hackeo
+      TypeEnum: 4
+      Description: Selecciona una carta en la chatarra y paga su coste + 1 para jugarla
+        al campo
+      Cost: 0
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 11
+      CardName: Piezas Defectuosas
+      Type: hackeo
+      TypeEnum: 4
+      Description: Pagando el coste de una pieza oponenter puedes enviarla a la chatarra
+        del propietario original
+      Cost: 0
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 12
+      CardName: Ingenieria Inversa
+      Type: hackeo
+      TypeEnum: 4
+      Description: "Pagando el coste de una pieza que el oponente tenga en juego
+        puedes copiar sus habilidades en \nuna pieza tuya"
+      Cost: 0
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 13
+      CardName: Propulsores de emergencia
+      Type: hackeo
+      TypeEnum: 4
+      Description: 'Puedes mover 2 cuadros en cualquien direccion a una unidad aliada '
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 14
+      CardName: Sabotaje Empresarial
+      Type: hackeo
+      TypeEnum: 4
+      Description: "Descartando una carta de equipo de tu mano puedes retirar su
+        valor de defensa a una pieza de equipo de\n una unidad enemiga"
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 15
+      CardName: Fabrica de Moldes
+      Type: Generador
+      TypeEnum: 5
+      Description: Una vez por turno puedes reducir el costo de una carta en uno
+      Cost: 3
+      Energy: 2
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 16
+      CardName: Motores de alta eficiencia
+      Type: Generador
+      TypeEnum: 5
+      Description: "Descartando una carta de tu mano puedes mover un cuadro adicional
+        en linea recta de tu maniobra \nseleccionada"
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 17
+      CardName: Almacen de reciclaje
+      Type: Generador
+      TypeEnum: 5
+      Description: "Cuando una de tus piezas es destruida pon un contador sobre esta
+        carta, destruyendo esta carta \npuedes jugar una carta con el coste igual
+        o menor al numero de contadores sobre esta carta."
+      Cost: 2
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 18
+      CardName: Rifle de Francotirador Electromagnetico
+      Type: Arma
+      TypeEnum: 1
+      Description: 
+      Cost: 3
+      Energy: 1
+      Damage: 6
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 1
+      AttackDistance: 4
+      AttackArea: 5
+      Movements: 0
+      AttackType: Linearecta
+    - Id: 19
+      CardName: Inmobilizador Araknate
+      Type: Arma
+      TypeEnum: 1
+      Description: "Al impactar, Descarta una carta de la mano si tu rival no descarta
+        una carta del mismo coste \npierde su siguiente fase de movimiento."
+      Cost: 4
+      Energy: 1
+      Damage: 2
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 2
+      AttackDistance: 5
+      AttackArea: 3
+      Movements: 
+      AttackType: Cuadrado
+    - Id: 20
+      CardName: Espada de Plasma
+      Type: Arma
+      TypeEnum: 1
+      Description: 
+      Cost: 3
+      Energy: 2
+      Damage: 7
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 3
+      AttackDistance: 0
+      AttackArea: 2
+      Movements: 0
+      AttackType: Cono
+    - Id: 21
+      CardName: Saboteadora Crick
+      Type: Arma
+      TypeEnum: 1
+      Description: "Tu decides que parte de armadura da\xF1ar o si una parte esta
+        descubierta puedes elejir da\xF1o directo"
+      Cost: 2
+      Energy: 1
+      Damage: 3
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 1
+      AttackDistance: 0
+      AttackArea: 5
+      Movements: 0
+      AttackType: Linearecta
+    - Id: 22
+      CardName: Brazo escudo
+      Type: Brazo
+      TypeEnum: 6
+      Description: 
+      Cost: 3
+      Energy: 1
+      Damage: 1
+      Shield: 5
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
+      Movements: 
+      AttackType: Linearecta
+    - Id: 23
+      CardName: 'Potenciador G.F.A '
+      Type: Brazo
+      TypeEnum: 6
+      Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
+        calculo de da\xF1o"
+      Cost: 2
+      Energy: 2
+      Damage: 1
+      Shield: 2
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
+      Movements: 
+      AttackType: Linearecta
+    - Id: 24
+      CardName: Brazo fortificado
+      Type: Brazo
+      TypeEnum: 6
+      Description: 
+      Cost: 3
+      Energy: 1
+      Damage: 1
+      Shield: 2
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
+      Movements: 
+      AttackType: Linearecta
+    - Id: 25
+      CardName: Pinza de Alta Presion
+      Type: Arma
+      TypeEnum: 1
+      Description: Este equipo se considera un arma cuando esta equipada
+      Cost: 4
+      Energy: 1
+      Damage: 6
+      Shield: 1
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 3
+      AttackDistance: 0
+      AttackArea: 2
+      Movements: 0
+      AttackType: Cono
+    - Id: 26
+      CardName: Impulsor Gravitacional
+      Type: Pecho
+      TypeEnum: 8
+      Description: Este equipo te da la cualidad Volador, lo que te permite ignorar
+        las dificultades del terreno
+      Cost: 4
+      Energy: 2
+      Damage: 0
+      Shield: 3
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 27
+      CardName: Coraza Pesada
+      Type: Pecho
+      TypeEnum: 8
+      Description: 
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 4
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 28
+      CardName: Blindaje en Aerosol
+      Type: Pecho
+      TypeEnum: 8
+      Description: 
+      Cost: 1
+      Energy: 1
+      Damage: 0
+      Shield: 2
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 29
+      CardName: Placas Seramicas
+      Type: Pecho
+      TypeEnum: 8
+      Description: 
+      Cost: 2
+      Energy: 1
+      Damage: 0
+      Shield: 2
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 30
+      CardName: 'Piernas de Crustaceo '
+      Type: Piernas
+      TypeEnum: 7
+      Description: "Despues de la seleccion de maniobras puedes mover  1 \u2190 0
+        1 \u2192 sin girar tu punto de vista"
+      Cost: 4
+      Energy: 1
+      Damage: 0
+      Shield: 3
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements:
+      - steps:
+        - Steps: 2
+          Direction: "\u2191"
+        fullStrings: "2 \u2191, 0\xBA"
+        degrees: 00000000
+      - steps:
+        - Steps: 3
+          Direction: "\u2192"
+        fullStrings: "3 \u2192, 0\xBA"
+        degrees: 00000000
+      - steps:
+        - Steps: 3
+          Direction: "\u2190"
+        fullStrings: "3 \u2190, 0\xBA"
+        degrees: 00000000
+      - steps:
+        - Steps: 0
+          Direction: 
+        fullStrings: "0, 90\xBA  o 180\xBA "
+        degrees: 5a000000b4000000
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: "1) 2 \u2191, 0\xBA\n2) 3 \u2192, 0\xBA\n3) 3 \u2190, 0\xBA \n4)
+        0, 90\xBA \u2B82 o 180\xBA \u2B82"
+      AttackType: 
+    - Id: 31
+      CardName: Impulsores Vectoriales
+      Type: Piernas
+      TypeEnum: 7
+      Description: 
+      Cost: 4
+      Energy: 1
+      Damage: 0
+      Shield: 3
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements:
+      - steps:
+        - Steps: 3
+          Direction: "\u2191"
+        fullStrings: "3 \u2191"
+        degrees: ffffffff
+      - steps:
+        - Steps: 2
+          Direction: "\u2191"
+        - Steps: 2
+          Direction: "\u2191"
+        fullStrings: "2 \u2191, 2\u2192, 90\xBA"
+        degrees: 5a000000
+      - steps:
+        - Steps: 2
+          Direction: "\u2191"
+        - Steps: 2
+          Direction: "\u2191"
+        fullStrings: "2 \u2191, 2\u2192, 90\xBA"
+        degrees: 5a000000
+      - steps:
+        - Steps: 3
+          Direction: "\u2191"
+        fullStrings: "3 \u2191, 180\xBA"
+        degrees: b4000000
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: "1) 3 \u2191 \n2) 2 \u2191, 2\u2192, 90\xBA\n3) 2 \u2191, 2\u2192,
+        90\xBA\n4) 3 \u2191, 180\xBA\u2B82"
+      AttackType: 
+    - Id: 32
+      CardName: Propulsores Turbo Cargados
+      Type: Piernas
+      TypeEnum: 7
+      Description: 
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 1
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements:
+      - steps:
+        - Steps: 4
+          Direction: "\u2191"
+        fullStrings: "4 \u2191"
+        degrees: ffffffff
+      - steps:
+        - Steps: 3
+          Direction: "\u2191"
+        - Steps: 3
+          Direction: "\u2191"
+        fullStrings: "3 \u2191, 2\u2192, 90\xBA"
+        degrees: 5a000000
+      - steps:
+        - Steps: 3
+          Direction: "\u2191"
+        - Steps: 3
+          Direction: "\u2191"
+        fullStrings: "3 \u2191, 2\u2192, 90\xBA"
+        degrees: 5a000000
+      - steps:
+        - Steps: 4
+          Direction: "\u2191"
+        fullStrings: "4 \u2191, 180\xBA"
+        degrees: b4000000
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: "1) 4 \u2191 \n2) 3 \u2191, 2\u2192, 90\xBA\n3) 3 \u2191, 2\u2192,
+        90\xBA\n4) 4 \u2191, 180\xBA\u2B82"
+      AttackType: 
+    - Id: 34
+      CardName: Teletransportador de Dimetria
+      Type: Campo
+      TypeEnum: 3
+      Description: Permite al ususario seleccionar una casilla para teletransportarse
+        antes de ejecutar los movimientos
+      Cost: 0
+      Energy: 0
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 35
+      CardName: Escudo de roble
+      Type: Campo
+      TypeEnum: 3
+      Description: "Permite al usuario resistir el da\xF1o de las minas por un turno"
+      Cost: 0
+      Energy: 0
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 36
+      CardName: Bloqueo Tactico Work Port
+      Type: Campo
+      TypeEnum: 3
+      Description: Posiciona una barrera en una casilla, ningun jugador puede moverse
+        a traves de esa casilla, en caso de que un jugador intente moverse a traves
+        de la casilla, no hara ningun movimiento en absoluto
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 37
+      CardName: Piloto Veterano En Tecnocombates
+      Type: Piloto
+      TypeEnum: 0
+      Description: "El Piloto Veterano en Tecnocombates: experto en batallas, inspira
+        confianza y temor. Su maestr\xEDa en el mecha es incomparable."
+      Cost: 0
+      Energy: 1
+      Damage: 1
+      Shield: 2
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 10
+      SerializedMovements:
+      - steps:
+        - Steps: 2
+          Direction: "\u2191"
+        fullStrings: "2 \u2191, 270\xBA"
+        degrees: 0e010000
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
+      Movements: "1) 2 \u2191, 270\xBA"
+      AttackType: Linearecta
