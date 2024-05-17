@@ -323,7 +323,7 @@ MonoBehaviour:
       AttackType: 
     - Id: 15
       CardName: Fabrica de Moldes
-      Type: Fabrica
+      Type: Generador
       TypeEnum: 5
       Description: Una vez por turno puedes reducir el costo de una carta en uno
       Cost: 3
@@ -342,7 +342,7 @@ MonoBehaviour:
       AttackType: 
     - Id: 16
       CardName: Motores de alta eficiencia
-      Type: Fabrica
+      Type: Generador
       TypeEnum: 5
       Description: "Descartando una carta de tu mano puedes mover un cuadro adicional
         en linea recta de tu maniobra \nseleccionada"
@@ -362,7 +362,7 @@ MonoBehaviour:
       AttackType: 
     - Id: 17
       CardName: Almacen de reciclaje
-      Type: Fabrica
+      Type: Generador
       TypeEnum: 5
       Description: "Cuando una de tus piezas es destruida pon un contador sobre esta
         carta, destruyendo esta carta \npuedes jugar una carta con el coste igual
@@ -466,18 +466,18 @@ MonoBehaviour:
       Description: 
       Cost: 3
       Energy: 1
-      Damage: 0
+      Damage: 1
       Shield: 5
       Recovery: 0
       IsCampEffect: 0
       ImageSource: {fileID: 0}
       Health: 0
       SerializedMovements: []
-      AttackTypeEnum: 0
-      AttackDistance: 0
-      AttackArea: 0
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
       Movements: 
-      AttackType: 
+      AttackType: Linearecta
     - Id: 23
       CardName: 'Potenciador G.F.A '
       Type: Brazo
@@ -486,18 +486,18 @@ MonoBehaviour:
         calculo de da\xF1o"
       Cost: 2
       Energy: 2
-      Damage: 0
+      Damage: 1
       Shield: 2
       Recovery: 0
       IsCampEffect: 0
       ImageSource: {fileID: 0}
       Health: 0
       SerializedMovements: []
-      AttackTypeEnum: 0
-      AttackDistance: 0
-      AttackArea: 0
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
       Movements: 
-      AttackType: 
+      AttackType: Linearecta
     - Id: 24
       CardName: Brazo fortificado
       Type: Brazo
@@ -505,18 +505,18 @@ MonoBehaviour:
       Description: 
       Cost: 3
       Energy: 1
-      Damage: 0
+      Damage: 1
       Shield: 2
       Recovery: 0
       IsCampEffect: 0
       ImageSource: {fileID: 0}
       Health: 0
       SerializedMovements: []
-      AttackTypeEnum: 0
-      AttackDistance: 0
-      AttackArea: 0
+      AttackTypeEnum: 1
+      AttackDistance: 1
+      AttackArea: 1
       Movements: 
-      AttackType: 
+      AttackType: Linearecta
     - Id: 25
       CardName: Pinza de Alta Presion
       Type: Arma
@@ -742,16 +742,77 @@ MonoBehaviour:
       Movements: "1) 4 \u2191 \n2) 3 \u2191, 2\u2192, 90\xBA\n3) 3 \u2191, 2\u2192,
         90\xBA\n4) 4 \u2191, 180\xBA\u2B82"
       AttackType: 
-    - Id: 33
-      CardName: pilotjeje
-      Type: 
+    - Id: 34
+      CardName: Teletransportador de Dimetria
+      Type: Campo
+      TypeEnum: 3
+      Description: Permite al ususario seleccionar una casilla para teletransportarse
+        antes de ejecutar los movimientos
+      Cost: 0
+      Energy: 0
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 35
+      CardName: Escudo de roble
+      Type: Campo
+      TypeEnum: 3
+      Description: "Permite al usuario resistir el da\xF1o de las minas por un turno"
+      Cost: 0
+      Energy: 0
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 36
+      CardName: Bloqueo Tactico Work Port
+      Type: Campo
+      TypeEnum: 3
+      Description: Posiciona una barrera en una casilla, ningun jugador puede moverse
+        a traves de esa casilla, en caso de que un jugador intente moverse a traves
+        de la casilla, no hara ningun movimiento en absoluto
+      Cost: 3
+      Energy: 1
+      Damage: 0
+      Shield: 0
+      Recovery: 0
+      IsCampEffect: 0
+      ImageSource: {fileID: 0}
+      Health: 0
+      SerializedMovements: []
+      AttackTypeEnum: 0
+      AttackDistance: 0
+      AttackArea: 0
+      Movements: 
+      AttackType: 
+    - Id: 37
+      CardName: Piloto Veterano En Tecnocombates
+      Type: Piloto
       TypeEnum: 0
-      Description: afasdkjfaksdlf
-      Cost: 1
-      Energy: 2
-      Damage: 3
-      Shield: 4
-      Recovery: 5
+      Description: "El Piloto Veterano en Tecnocombates: experto en batallas, inspira
+        confianza y temor. Su maestr\xEDa en el mecha es incomparable."
+      Cost: 0
+      Energy: 1
+      Damage: 1
+      Shield: 2
+      Recovery: 0
       IsCampEffect: 0
       ImageSource: {fileID: 0}
       Health: 10
@@ -759,10 +820,10 @@ MonoBehaviour:
       - steps:
         - Steps: 2
           Direction: "\u2191"
-        fullStrings: 
-        degrees: 5a000000
+        fullStrings: "2 \u2191, 270\xBA"
+        degrees: 0e010000
       AttackTypeEnum: 1
       AttackDistance: 1
-      AttackArea: 0
-      Movements: 
-      AttackType: 
+      AttackArea: 1
+      Movements: "1) 2 \u2191, 270\xBA"
+      AttackType: Linearecta

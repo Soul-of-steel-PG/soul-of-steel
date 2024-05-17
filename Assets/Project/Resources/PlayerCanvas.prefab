@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1814612310471290923}
   - component: {fileID: 5731528075812881646}
   - component: {fileID: 7791935762418749837}
+  - component: {fileID: 2292895966613971707}
   m_Layer: 5
   m_Name: Nickname
   m_TagString: Untagged
@@ -34,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.447693, y: 47.379524}
+  m_AnchoredPosition: {x: 5.447693, y: 61}
   m_SizeDelta: {x: 95.91968, y: 48.818825}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5731528075812881646
@@ -134,6 +135,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2292895966613971707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4618066575977861252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05320ee940d140fab108f42cc621e401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8381386026332814181
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +377,14 @@ PrefabInstance:
       propertyPath: deck.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5027198364437857960, guid: 23c85d79f642d554bb15446092d38fbf, type: 3}
+      propertyPath: nickname
+      value: 
+      objectReference: {fileID: 2292895966613971707}
+    - target: {fileID: 5027198364437857960, guid: 23c85d79f642d554bb15446092d38fbf, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8823648603394773729, guid: 23c85d79f642d554bb15446092d38fbf, type: 3}
       propertyPath: m_Name
       value: Player (1)
@@ -380,7 +401,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1084125283442225677, guid: 23c85d79f642d554bb15446092d38fbf, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1814612310471290923}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23c85d79f642d554bb15446092d38fbf, type: 3}

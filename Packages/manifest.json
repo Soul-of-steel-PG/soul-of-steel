@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.unity.collab-proxy": "2.2.0",
+    "com.unity.ext.nunit": "https://github.com/needle-mirror/com.unity.ext.nunit.git",
     "com.unity.feature.2d": "2.0.0",
     "com.unity.ide.rider": "3.0.28",
     "com.unity.ide.visualstudio": "2.0.18",

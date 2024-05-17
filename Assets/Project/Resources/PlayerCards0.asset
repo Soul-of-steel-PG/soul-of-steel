@@ -13,16 +13,72 @@ MonoBehaviour:
   m_Name: PlayerCards0
   m_EditorClassIdentifier: 
   playerCards:
-  - Id: 0
-    CardName: Franja Minada de Tulik
+  - Id: 23
+    CardName: 'Potenciador G.F.A '
+    Type: Brazo
+    TypeEnum: 6
+    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
+      calculo de da\xF1o"
+    Cost: 2
+    Energy: 2
+    Damage: 0
+    Shield: 2
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 23
+    CardName: 'Potenciador G.F.A '
+    Type: Brazo
+    TypeEnum: 6
+    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
+      calculo de da\xF1o"
+    Cost: 2
+    Energy: 2
+    Damage: 0
+    Shield: 2
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 26
+    CardName: Impulsor Gravitacional
+    Type: Pecho
+    TypeEnum: 8
+    Description: Este equipo te da la cualidad Volador, lo que te permite ignorar
+      las dificultades del terreno
+    Cost: 4
+    Energy: 2
+    Damage: 0
+    Shield: 3
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 0}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 6
+    CardName: Circuito De Carreras de Formula R
     Type: Campo
     TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
-    Cost: 3
+    Description: Debes ejecutar tu maniobra seleccionada dos veces
+    Cost: 1
     Energy: 1
     Damage: 0
     Shield: 0
@@ -128,19 +184,16 @@ MonoBehaviour:
     AttackArea: 0
     Movements: 
     AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
-    Cost: 3
-    Energy: 1
+  - Id: 23
+    CardName: 'Potenciador G.F.A '
+    Type: Brazo
+    TypeEnum: 6
+    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
+      calculo de da\xF1o"
+    Cost: 2
+    Energy: 2
     Damage: 0
-    Shield: 0
+    Shield: 2
     Recovery: 0
     IsCampEffect: 0
     ImageSource: {fileID: 0}
@@ -151,19 +204,16 @@ MonoBehaviour:
     AttackArea: 0
     Movements: 
     AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
-    Cost: 3
-    Energy: 1
+  - Id: 23
+    CardName: 'Potenciador G.F.A '
+    Type: Brazo
+    TypeEnum: 6
+    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
+      calculo de da\xF1o"
+    Cost: 2
+    Energy: 2
     Damage: 0
-    Shield: 0
+    Shield: 2
     Recovery: 0
     IsCampEffect: 0
     ImageSource: {fileID: 0}
@@ -175,10 +225,10 @@ MonoBehaviour:
     Movements: 
     AttackType: 
   - Id: 33
-    CardName: pilotjeje
+    CardName: DefaultPilot
     Type: 
     TypeEnum: 0
-    Description: afasdkjfaksdlf
+    Description: Default pilot
     Cost: 1
     Energy: 2
     Damage: 3
@@ -186,7 +236,7 @@ MonoBehaviour:
     Recovery: 5
     IsCampEffect: 0
     ImageSource: {fileID: 0}
-    Health: 1
+    Health: 10
     SerializedMovements:
     - steps:
       - Steps: 2
@@ -198,22 +248,3 @@ MonoBehaviour:
     AttackArea: 0
     Movements: 
     AttackType: 
-  - Id: 18
-    CardName: Rifle de Francotirador Electromagnetico
-    Type: Arma
-    TypeEnum: 1
-    Description: 
-    Cost: 3
-    Energy: 1
-    Damage: 6
-    Shield: 0
-    Recovery: 0
-    IsCampEffect: 0
-    ImageSource: {fileID: 0}
-    Health: 0
-    SerializedMovements: []
-    AttackTypeEnum: 1
-    AttackDistance: 4
-    AttackArea: 5
-    Movements: 0
-    AttackType: Linearecta

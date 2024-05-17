@@ -102,6 +102,7 @@ MonoBehaviour:
   effectCardPrefab: {fileID: 1239522931296720530, guid: 26a20748aff6bc846a91feea8c7ff6c1, type: 3}
   legsCardPrefab: {fileID: 8925707687211894724, guid: 342e2f4e0d12d474ea7c50fbaa69e4d6, type: 3}
   armCardPrefab: {fileID: 908077623977906467, guid: 8e5b4e0ace405b149948f0d0908eb89e, type: 3}
+  chestCardPrefab: {fileID: 8925707687211894724, guid: 7d899b3670746c14587ac0be8bee2828, type: 3}
   playerName: {fileID: 0}
   playerDirection: {fileID: 2875345132937117393}
 --- !u!114 &5027198364437857960
@@ -121,6 +122,7 @@ MonoBehaviour:
     steps: []
     fullStrings: 
     degrees: 
+  nickname: {fileID: 0}
 --- !u!222 &7387773782251758710
 CanvasRenderer:
   m_ObjectHideFlags: 0
