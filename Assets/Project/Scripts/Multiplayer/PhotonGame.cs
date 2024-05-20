@@ -83,11 +83,16 @@ public class PhotonGame : MonoBehaviourPunCallbacks
 
     private IEnumerator DisconnectAndLoad()
     {
-        PhotonNetwork.LeaveRoom();
-        while (PhotonNetwork.InRoom) {
-            yield return null;
-        }
+        //PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.Disconnect();
+        //while (PhotonNetwork.InRoom) {
+        //    yield return null;
+        //}
 
-        PhotonNetwork.LoadLevel(MAIN_MENU_SCENE);                                                                                                                                                                                                                                                                               
+        //PhotonNetwork.LoadLevel(MAIN_MENU_SCENE);
+        Debug.Log($"A player left the room");
+        PhotonNetwork.LoadLevel(MAIN_MENU_SCENE);
+        PhotonNetwork.LeaveRoom();
+        yield break;
     }
 }

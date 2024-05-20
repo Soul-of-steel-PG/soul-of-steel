@@ -40,5 +40,10 @@ public class MineEffectController : EffectController, IMineEffectController {
         GameManager.Instance.LocalPlayerInstance.PlayerController.SetDoingEffect(false);
         EffectManager.Instance.OnSelectedCellEvent -= SetMines;
         EffectManager.Instance.OnCellsSelectedEvent -= StopSettingMines;
+
+        if (true)
+        {
+
+        }
     }
 }

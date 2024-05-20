@@ -2,18 +2,18 @@
 using UnityEngine;
 
 
-public interface IEffectCardView : ICardView
-{
+public interface IEffectCardView : ICardView {
     public void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
         bool isCampEffect, Sprite imageSource, CardType type);
 }
 
-public class EffectCardView : CardView, IEffectCardView
-{
+public class EffectCardView : CardView, IEffectCardView {
     private IEffectCardController _effectCardController;
 
     public IEffectCardController EffectCardController {
-        get { return _effectCardController ??= new EffectCardController(this); }
+        get {
+            return _effectCardController ??= new EffectCardController(this, GameManager.Instance, UIManager.Instance);
+        }
     }
 
     public override void ManageLeftClick()
@@ -71,5 +71,10 @@ public class EffectCardView : CardView, IEffectCardView
     public override int GetScrapCost()
     {
         return EffectCardController.GetScrapCost();
+    }
+
+    public override string GetCardName()
+    {
+        return EffectCardController.GetCardName();
     }
 }

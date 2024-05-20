@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IArmCardController : IEquipmentCardController
-{
+public interface IArmCardController : IEquipmentCardController {
     void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
         int damage, AttackType attackType, int attackDistance, int attackArea, Sprite imageSource, CardType type);
 
@@ -11,8 +10,7 @@ public interface IArmCardController : IEquipmentCardController
     int GetDamage();
 }
 
-public class ArmCardController : EquipmentCardController, IArmCardController
-{
+public class ArmCardController : EquipmentCardController, IArmCardController {
     private readonly IArmCardView _view;
 
     private int _damage;
@@ -22,7 +20,9 @@ public class ArmCardController : EquipmentCardController, IArmCardController
 
     private List<Vector2> currentCellsShaded;
 
-    public ArmCardController(IArmCardView view) : base(view)
+    public ArmCardController(IArmCardView view, IGameManager gameManager, IUIManager uiManager) : base(view,
+        gameManager,
+        uiManager)
     {
         _view = view;
     }
@@ -37,7 +37,8 @@ public class ArmCardController : EquipmentCardController, IArmCardController
 
         PlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
 
-        if (Type == CardType.Arm) {
+        if (Type == CardType.Arm)
+        {
             PilotCardView currentPilotCard = currentPlayer.PlayerController.GetPilotCard();
             _damage = currentPilotCard.PilotCardController.GetDefaultDamage();
             _attackDistance = 1;
@@ -59,10 +60,13 @@ public class ArmCardController : EquipmentCardController, IArmCardController
         int direction = currentPlayer.PlayerController.GetCurrentDegrees();
         Vector2 cellToSelect = currentPlayer.PlayerController.GetCurrentCell();
 
-        switch (_attackType) {
+        switch (_attackType)
+        {
             case AttackType.StraightLine:
-                for (int i = 0; i < _attackDistance; i++) {
-                    switch (direction) {
+                for (int i = 0; i < _attackDistance; i++)
+                {
+                    switch (direction)
+                    {
                         case 180:
                             cellToSelect.x -= 1;
                             break;
@@ -89,8 +93,10 @@ public class ArmCardController : EquipmentCardController, IArmCardController
 
                 break;
             default:
-                for (int i = 0; i < _attackDistance; i++) {
-                    switch (direction) {
+                for (int i = 0; i < _attackDistance; i++)
+                {
+                    switch (direction)
+                    {
                         case 180:
                             cellToSelect.x -= 1;
                             break;
@@ -129,20 +135,25 @@ public class ArmCardController : EquipmentCardController, IArmCardController
 
     public void UnShadeCells()
     {
-        foreach (Vector2 cellIndex in currentCellsShaded) {
+        foreach (Vector2 cellIndex in currentCellsShaded)
+        {
             if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                .GetIsMined()) {
+                .GetIsMined())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Mined);
             }
             else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                     .GetIsBarrier()) {
+                     .GetIsBarrier())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Barrier);
             }
             else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                     .GetIsTower()) {
+                     .GetIsTower())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Tower);
             }
-            else {
+            else
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Normal);
             }
         }

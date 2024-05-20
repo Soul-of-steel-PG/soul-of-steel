@@ -10,21 +10,27 @@ public class EffectCardController : CardController, IEffectCardController {
 
     private bool _isCampEffect;
 
-    public EffectCardController(IEffectCardView view) : base(view) {
+    public EffectCardController(IEffectCardView view, IGameManager gameManager, IUIManager uiManager) : base(view,
+        gameManager,
+        uiManager)
+    {
         _view = view;
     }
 
-    public override CardType GetCardType() {
+    public override CardType GetCardType()
+    {
         return Type;
     }
 
     public void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-        bool isCampEffect, Sprite imageSource, CardType type) {
+        bool isCampEffect, Sprite imageSource, CardType type)
+    {
         _isCampEffect = isCampEffect;
         base.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
     }
 
-    public override void DoEffect(int originId) {
+    public override void DoEffect(int originId)
+    {
         base.DoEffect(originId);
 
         EffectManager.Instance.GetEffect(Id, originId);

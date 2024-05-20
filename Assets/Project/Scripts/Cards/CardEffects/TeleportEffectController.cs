@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITeleportEffectController : IEffectController
-{
+public interface ITeleportEffectController : IEffectController {
 }
 
-public class TeleportEffectController : EffectController, ITeleportEffectController
-{
+public class TeleportEffectController : EffectController, ITeleportEffectController {
     private PlayerView _player;
 
     public override void Activate(int originId)
@@ -27,9 +25,10 @@ public class TeleportEffectController : EffectController, ITeleportEffectControl
                 .CellController.GetCellType()) return;
 
         //Here i need to move the player to the desired position
-        _player.PlayerController.SetCurrentCell(index);
-        _player.GetComponent<PlayerMovement>().MoveToCell(index);
-
+        if (_player.MoveToCell(index))
+        {
+            _player.PlayerController.SetCurrentCell(index);
+        }
     }
 
     private void StopEffect(List<Vector2> cellsSelected)

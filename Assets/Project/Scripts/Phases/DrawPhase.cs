@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class DrawPhase : Phase
-{
+public class DrawPhase : Phase {
     public DrawPhase(IMatchView matchView) : base(matchView)
     {
         GameManager.Instance.OnDrawFinishedEvent += FinishDraw;
@@ -18,8 +17,7 @@ public class DrawPhase : Phase
 
     public void FinishDraw()
     {
-        GameManager.Instance.ChangePhase(new ChangePriorityPhase(matchView));
-
         if (GameManager.HasInstance()) GameManager.Instance.OnDrawFinishedEvent -= FinishDraw;
+        GameManager.Instance.ChangePhase(new ChangePriorityPhase(matchView));
     }
 }

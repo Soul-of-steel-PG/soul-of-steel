@@ -1,10 +1,9 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public interface IEquipmentCardController : ICardController
-{
-    void InitCard(int id, string cardName, string cardDescription,
-        int scrapCost, int scrapRecovery, Sprite imageSource, CardType type);
+public interface IEquipmentCardController : ICardController {
+    void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
+        int shieldValue, Sprite imageSource, CardType type);
 
     void EquipCardAnimation(bool isMine);
 
@@ -12,12 +11,13 @@ public interface IEquipmentCardController : ICardController
     void RemoveEffect();
 }
 
-public class EquipmentCardController : CardController, IEquipmentCardController
-{
+public class EquipmentCardController : CardController, IEquipmentCardController {
     private readonly IEquipmentCardView _view;
     private int _shieldValue;
 
-    public EquipmentCardController(IEquipmentCardView view) : base(view)
+    public EquipmentCardController(IEquipmentCardView view, IGameManager gameManager, IUIManager uiManager) : base(view,
+        gameManager,
+        uiManager)
     {
         _view = view;
     }
@@ -28,9 +28,8 @@ public class EquipmentCardController : CardController, IEquipmentCardController
     }
 
     public void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery,
-    int shieldValue, Sprite imageSource, CardType type)
+        int shieldValue, Sprite imageSource, CardType type)
     {
-        Debug.Log($"Equipment card {cardName} with id {id}");
         _shieldValue = shieldValue;
         base.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
     }
@@ -58,6 +57,7 @@ public class EquipmentCardController : CardController, IEquipmentCardController
 
     public void RemoveEffect()
     {
-        EffectManager.Instance.RemoveEffect(Id, GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId());
+        EffectManager.Instance.RemoveEffect(Id,
+            GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId());
     }
 }

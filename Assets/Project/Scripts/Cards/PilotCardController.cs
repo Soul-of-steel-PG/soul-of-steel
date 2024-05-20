@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPilotCardController : ICardController
-{
+public interface IPilotCardController : ICardController {
     void InitCard(int id, string cardName, string cardDescription, int scrapCost, int scrapRecovery, Sprite imageSource,
         int health, Movement defaultMovement, CardType type, int defaultDamage = 0);
 
@@ -12,8 +11,7 @@ public interface IPilotCardController : ICardController
     void SelectAttack();
 }
 
-public class PilotCardController : CardController, IPilotCardController
-{
+public class PilotCardController : CardController, IPilotCardController {
     private readonly IPilotCardView _view;
 
     [Header("Pilot Properties")] private int _health;
@@ -23,8 +21,9 @@ public class PilotCardController : CardController, IPilotCardController
 
     private List<Vector2> currentCellsShaded;
 
-
-    public PilotCardController(IPilotCardView view) : base(view)
+    public PilotCardController(IPilotCardView view, IGameManager gameManager, IUIManager uiManager) : base(view,
+        gameManager,
+        uiManager)
     {
         _view = view;
     }
@@ -77,8 +76,10 @@ public class PilotCardController : CardController, IPilotCardController
         int direction = currentPlayer.PlayerController.GetCurrentDegrees();
         Vector2 cellToSelect = currentPlayer.PlayerController.GetCurrentCell();
 
-        for (int i = 0; i < 1; i++) {
-            switch (direction) {
+        for (int i = 0; i < 1; i++)
+        {
+            switch (direction)
+            {
                 case 180:
                     cellToSelect.x -= 1;
                     break;
@@ -108,20 +109,25 @@ public class PilotCardController : CardController, IPilotCardController
 
     public void UnShadeCells()
     {
-        foreach (Vector2 cellIndex in currentCellsShaded) {
+        foreach (Vector2 cellIndex in currentCellsShaded)
+        {
             if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                .GetIsMined()) {
+                .GetIsMined())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Mined);
             }
             else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                     .GetIsBarrier()) {
+                     .GetIsBarrier())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Barrier);
             }
             else if (GameManager.Instance.BoardView.GetBoardStatus()[(int)cellIndex.y][(int)cellIndex.x].CellController
-                     .GetIsTower()) {
+                     .GetIsTower())
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Tower);
             }
-            else {
+            else
+            {
                 GameManager.Instance.BoardView.SetBoardStatusCellType(cellIndex, CellType.Normal);
             }
         }

@@ -7,8 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public interface ICardView
-{
+public interface ICardView {
     void SetCardUI(string cardName, string cardDescription, int scrapCost, Sprite imageSource);
 
     GameObject GetGameObject();
@@ -18,11 +17,13 @@ public interface ICardView
     // void SelectAnimation();
     void SetDismissTextSizes();
     void SelectAnimation(bool select);
+    CardType GetCardType();
+    void SetIsSelecting(bool isSelecting);
+    string GetCardName();
 }
 
 [Serializable]
-public abstract class CardView : MonoBehaviour, ICardView, IPointerClickHandler
-{
+public abstract class CardView : MonoBehaviour, ICardView, IPointerClickHandler {
     [SerializeField, BoxGroup("Card UI Components")]
     private TMP_Text nameTMP;
 
@@ -64,6 +65,8 @@ public abstract class CardView : MonoBehaviour, ICardView, IPointerClickHandler
     public abstract void ManageLeftClick();
     public abstract void ManageRightClick();
     public abstract void SetIsSelecting(bool isSelecting);
+    public abstract string GetCardName();
+
     public abstract CardType GetCardType();
     public abstract bool GetSelected();
     public abstract void Select(bool deselect = false);

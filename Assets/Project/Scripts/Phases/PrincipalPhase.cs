@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrincipalPhase : Phase
-{
+public class PrincipalPhase : Phase {
     private bool _allCardSelected;
     private EquipmentCardView _localEquipmentCard;
     private int _localId;
@@ -18,6 +17,7 @@ public class PrincipalPhase : Phase
 
     public override IEnumerator Start()
     {
+        _allCardSelected = false;
         matchView.SetCurrentPhaseText("principal phase");
 
         List<CardType> cardTypes = new() {
@@ -29,12 +29,16 @@ public class PrincipalPhase : Phase
         };
 
         // selecting cards
+        Debug.Log($"escoge");
         GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1));
 
-        while (!_allCardSelected) {
+        while (!_allCardSelected)
+        {
             bool localAllSelected = true;
-            foreach (PlayerView player in GameManager.Instance.PlayerList) {
-                if (!player.PlayerController.GetCardsSelected()) {
+            foreach (PlayerView player in GameManager.Instance.PlayerList)
+            {
+                if (!player.PlayerController.GetCardsSelected())
+                {
                     localAllSelected = false;
                     break;
                 }
@@ -45,6 +49,7 @@ public class PrincipalPhase : Phase
             yield return null;
         }
 
+        Debug.Log($"escogio");
         GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1, false));
 
         // equipping cards         
@@ -56,32 +61,36 @@ public class PrincipalPhase : Phase
 
         yield return new WaitForSeconds(0.5f);
 
-
-        foreach (PlayerView playerView in GameManager.Instance.PlayerList) {
+        foreach (IPlayerView playerView in GameManager.Instance.PlayerList)
+        {
             if (playerView.PlayerController.GetPlayerId() ==
-                GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId()) {
+                GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId())
+            {
                 playerView.PlayerController.EquipCard(_localId);
             }
-            else {
+            else
+            {
                 //playerView.PlayerController.EquipCard(_enemyId);
             }
         }
 
         GameManager.Instance.LocalPlayerInstance.PlayerController.SetCardsSelected(false);
 
-        GameManager.Instance.ChangePhase(new MovementPhase(matchView));
         GameManager.Instance.OnCardSelectedEvent -= CardSelected;
         GameManager.Instance.OnCardSelectingFinishedEvent -= AllCardsSelected;
+        GameManager.Instance.ChangePhase(new MovementPhase(matchView));
     }
 
     private void CardSelected(PlayerView view, CardView card, bool selected)
     {
         if (view.PlayerController.GetPlayerId() ==
-            GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() || GameManager.Instance.testing) {
+            GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() || GameManager.Instance.testing)
+        {
             _localId = card.GetId();
             _localEquipmentCard = (EquipmentCardView)card;
         }
-        else {
+        else
+        {
             _enemyId = card.GetId();
             _enemyEquipmentCard = (EquipmentCardView)card;
         }

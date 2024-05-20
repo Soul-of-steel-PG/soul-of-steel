@@ -10,31 +10,31 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public interface IPlayerView
-{
+public interface IPlayerView {
     GameObject GetHandCardsPanel();
     void CleanHandsPanel();
-    CardView AddCardToPanel(CardType cardType, bool inHand = false);
+    ICardView AddCardToPanel(CardType cardType, bool inHand = false);
     void InitAddCards(int amount);
     PhotonView GetPv();
+    bool PhotonViewIsMine { get; }
     void SelectCards(List<CardType> type, int amount, bool setSelecting = true);
     void ClearPanel(Transform panel);
-    PlayerCardsInfo GetDeckInfo();
+    IPlayerCardsInfo GetDeckInfo();
     bool GetAttackDone();
     void SetAttackDone(bool attackDone);
     void DestroyGO(GameObject go);
     IPlayerController PlayerController { get; }
-    void MoveToCell(Vector2 nextCell);
+    bool MoveToCell(Vector2 nextCell);
     void Rotate(int currentDegrees);
     void DrawCards(int amount, bool fullDraw);
     void SelectMovement();
+    string GetPlayerName();
 }
 
 [Serializable]
-public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
-{
+public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable {
     [SerializeField] private PhotonView pv;
-    [ShowInInspector] public PlayerCardsInfo _deckInfo;
+    [ShowInInspector] private PlayerCardsInfo _deckInfo;
     private PlayerMovement _playerMovement;
 
     public bool _inAnimation;
@@ -45,6 +45,8 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     private bool _effectTurnDone;
     private bool _movementTurnDone;
     private bool _attackDone;
+
+    public bool PhotonViewIsMine => pv.IsMine;
 
     public GameObject HandCardsPanel {
         get { return _handCardsPanel ??= GameManager.Instance.HandPanel.GetGo(); }
@@ -64,17 +66,20 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     private IPlayerView _playerViewImplementation;
 
     public IPlayerController PlayerController {
-        get { return _playerController ??= new PlayerController(this, GameManager.Instance); }
+        get {
+            return _playerController ??=
+                new PlayerController(this, GameManager.Instance, EffectManager.Instance, UIManager.Instance);
+        }
     }
 
-    public void MoveToCell(Vector2 nextCell)
+    public bool MoveToCell(Vector2 nextCell)
     {
-        _playerMovement.MoveToCell(nextCell);
+        return _playerMovement.MoveToCell(nextCell);
     }
 
     public void Rotate(int currentDegrees)
     {
-        _playerMovement.Rotate(transform, currentDegrees);
+        StartCoroutine(_playerMovement.Rotate(transform, currentDegrees));
     }
 
     private void Awake()
@@ -101,8 +106,9 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     {
         TryGetComponent(out Image image);
         image.enabled = true;
+        image.sprite = Resources.Load<Sprite>($"PlayerImage{(PlayerController.GetPlayerId() == 1 ? 1 : 2)}");
         playerName.gameObject.SetActive(true);
-        playerDirection.gameObject.SetActive(true);
+        // playerDirection.gameObject.SetActive(true);
         if (!GameManager.Instance.testing) playerName.text = pv.Owner.NickName;
 
         SetCardsInfo();
@@ -121,7 +127,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
         }
     }
 
-    public CardView AddCardToPanel(CardType cardType, bool inHand = false)
+    public ICardView AddCardToPanel(CardType cardType, bool inHand = false)
     {
         GameObject prefab = null;
         Transform parent = null;
@@ -211,10 +217,10 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
         rt.sizeDelta = new Vector2(250, 350);
         if (inHand)
         {
-            rt.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+            rt.localScale = new Vector3(0.8f, 0.8f, 0.8f);
         }
 
-        GO.TryGetComponent(out CardView card);
+        GO.TryGetComponent(out ICardView card);
         GO.SetActive(pv.IsMine);
         return card;
     }
@@ -237,7 +243,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
         }
     }
 
-    public PlayerCardsInfo GetDeckInfo()
+    public IPlayerCardsInfo GetDeckInfo()
     {
         return _deckInfo;
     }
@@ -273,11 +279,18 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
 
             if (!GameManager.Instance.testing)
             {
-                _deckInfo.SetPlayerCards(new List<int> { 30, 36, 34, 35, 23, 6, 0, 35, 32, 20, 0, 35, 23, 35, 37 });
+                //_deckInfo.SetPlayerCards(new List<int> { 30, 36, 34, 35, 23, 6, 0, 35, 32, 20, 0, 35, 23, 35, 37, 0, 6, 18, 20, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38 });
+                _deckInfo.SetPlayerCards(new List<int>
+                    { 28, 0, 27, 32, 18, 23, 34, 37, 29, 35, 31, 26, 36, 30, 6, 24, 20, 22, 38 });
             }
             else
             {
-                _deckInfo.SetPlayerCards(new List<int> { 30, 36, 34, 35, 23, 6, 0, 35, 32, 20, 0, 35, 23, 35, 37 });
+                // _deckInfo.SetPlayerCards(new List<int> {
+                //     38, 36, 34, 35, 0, 0, 0, 35, 32, 20, 0, 35, 23, 35, 37, 0, 6, 18, 20, 22, 23, 24, 26, 27, 28, 29,
+                //     30, 31, 32, 34, 35, 36, 37, 38
+                // });
+                _deckInfo.SetPlayerCards(new List<int>
+                    { 28, 0, 27, 32, 18, 23, 34, 37, 29, 35, 31, 26, 36, 30, 6, 24, 20, 22, 38 });
             }
         }
     }
@@ -304,6 +317,11 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     public void SelectMovement()
     {
         PlayerController.SelectMovement();
+    }
+
+    public string GetPlayerName()
+    {
+        return playerName.text;
     }
 
     public void SelectAttack()
@@ -335,6 +353,8 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
             //movement
             stream.SendNext(PlayerController.GetMovementSelected());
             stream.SendNext(PlayerController.GetMovementDone());
+            stream.SendNext((int)PlayerController.GetCurrentCell().x);
+            stream.SendNext((int)PlayerController.GetCurrentCell().y);
 
             //attack
             stream.SendNext(_attackDone);
@@ -352,6 +372,8 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
 
             bool receivedMovementSelected = (bool)stream.ReceiveNext();
             bool receivedMovementDone = (bool)stream.ReceiveNext();
+            int xReceivedPos = (int)stream.ReceiveNext();
+            int yReceivedPos = (int)stream.ReceiveNext();
 
             bool receivedAttackDone = (bool)stream.ReceiveNext();
             int receivedHealth = (int)stream.ReceiveNext();
@@ -366,6 +388,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
                     player.PlayerController.SetMovementDone(receivedMovementDone);
                     player.SetAttackDone(receivedAttackDone);
                     player.PlayerController.SetHealth(receivedHealth);
+                    player.PlayerController.SetCurrentCell(new Vector2(xReceivedPos, yReceivedPos));
                 }
             }
 
@@ -437,6 +460,23 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
     public void RpcReceivedDamage(int damage, int localPlayerId)
     {
         PlayerController.ReceivedDamage(damage, localPlayerId);
+    }
+
+    [PunRPC]
+    public void RpcDoDamage(int playerId, int x, int y)
+    {
+        if (playerId != GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId())
+        {
+            IPlayerView player =
+                GameManager.Instance.PlayerList.Find(p => p.PlayerController.GetPlayerId() != playerId);
+
+            if (player.PlayerController.GetCurrentCell() == new Vector2(x, y))
+            {
+                Debug.Log($"daño");
+                player.PlayerController.ReceivedDamage(player.PlayerController.GetCurrentDamage(),
+                    player.PlayerController.GetPlayerId());
+            }
+        }
     }
 
     [PunRPC]
