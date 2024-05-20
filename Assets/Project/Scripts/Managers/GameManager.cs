@@ -6,8 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public interface IGameManager
-{
+public interface IGameManager {
     int CurrentPriority { get; }
     void SetCurrentPriority(int currentPriority);
     List<IPlayerView> PlayerList { get; }
@@ -17,10 +16,17 @@ public interface IGameManager
     CardInfoSerialized.CardInfoStruct GetCardFromDataBaseByIndex(int index);
     CardInfoSerialized.CardInfoStruct GetCardFromDataBaseByType(CardType type);
     void AddPlayerToThePlayerList(IPlayerView playerView);
+    bool ValidateHealthStatus();
+    void OnSelectionConfirmed(int id);
+    bool GetTesting();
+    void OnLocalAttackDone();
+    void OnMovementSelected(Movement getDefaultMovement, PlayerView view, int getMovementIterations);
+    PlayerView LocalPlayerInstance { get; set; }
+    void OnCardSelected(PlayerView playerView, CardView card, bool selected);
+    ScrapPanel ScrapPanel { get; set; }
 }
 
-public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
-{
+public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager {
     public CardsDataBase cardDataBase;
 
     public bool testing;
@@ -31,7 +37,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
 
     public IHandPanel HandPanel { get; set; }
     public IHandPanel MiddlePanel { get; set; }
-    public ScrapPanel scrapPanel;
+    public ScrapPanel ScrapPanel { get; set; }
 
     public EquipmentPanel myEquipmentPanel;
     public EquipmentPanel enemyEquipmentPanel;
@@ -99,6 +105,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
     public void OnSelectionConfirmed(int id)
     {
         OnSelectionConfirmedEvent?.Invoke(id);
+    }
+
+    public bool GetTesting()
+    {
+        return testing;
     }
 
     public void OnMovementFinished()
@@ -175,7 +186,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
 
     public bool ValidateHealthStatus()
     {
-        foreach (PlayerView playerView in PlayerList)
+        foreach (IPlayerView playerView in PlayerList)
         {
             if (playerView.PlayerController.GetCurrenHealth() <= 0)
             {
@@ -184,7 +195,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
                 Debug.Log($"player health {playerView.PlayerController.GetCurrenHealth()}");
                 gameOver = true;
                 UIManager.Instance.SetText(
-                    $"JUEGO TERMINADO, jugador {playerView.PlayerController.GetPlayerId()} perdio");
+                    $"JUEGO TERMINADO, {playerView.GetPlayerName()} perdio");
                 CurrenPhase.End();
                 StartCoroutine(BackToMenuFinishingGame());
                 return false;
@@ -199,6 +210,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager
         yield return new WaitForSeconds(3);
 
         PhotonGame.DisconnectPlayer();
+    }
+
+    public void ResetValues()
+    {
+        testing = false;
+        isFirstRound = false;
+        movementTurn = 0;
+        attackTurn = 0;
+        CurrentPhase = default(Phase);
+        CurrentPriority = 0;
+        CurrenPhase = default(Phase);
+        gameOver = false;
     }
 
     public void PrepareForMatch(IMatchView matchView)

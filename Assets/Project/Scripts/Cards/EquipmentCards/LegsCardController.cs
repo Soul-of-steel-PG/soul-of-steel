@@ -15,28 +15,35 @@ public class LegsCardController : EquipmentCardController, ILegsCardController {
 
     private List<Movement> _movements;
 
-    public LegsCardController(ILegsCardView view) : base(view) {
+    public LegsCardController(ILegsCardView view, IGameManager gameManager, IUIManager uiManager) : base(view,
+        gameManager,
+        uiManager)
+    {
         _view = view;
     }
 
     public void InitCard(int id, string cardName, string cardDescription,
         int scrapCost, int scrapRecovery, List<Movement> movements,
-        Sprite imageSource, CardType type) {
+        Sprite imageSource, CardType type)
+    {
         _movements = movements;
 
         base.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
     }
 
-    public void SelectMovement() {
+    public void SelectMovement()
+    {
         List<string> optionNames = new();
-        foreach (Movement movement in _movements) {
+        foreach (Movement movement in _movements)
+        {
             optionNames.Add(movement.fullStrings);
         }
 
-        UIManager.Instance.ShowSelectionPanel(_movements.Count, optionNames);
+        UIManager.Instance.ShowSelectionPanel(_movements.Count, optionNames, ImageSource);
     }
 
-    public List<Movement> GetMovements() {
+    public List<Movement> GetMovements()
+    {
         return _movements;
     }
 }

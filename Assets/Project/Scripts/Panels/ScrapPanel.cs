@@ -1,15 +1,27 @@
 ﻿using System;
 using UnityEngine;
 
-public class ScrapPanel : MonoBehaviour {
+public interface IScrapPanel {
+    Transform GetTransform();
+    void SendToBackup();
+}
+
+public class ScrapPanel : MonoBehaviour, IScrapPanel {
     public Transform backup;
 
-    private void Start() {
-        GameManager.Instance.scrapPanel = this;
+    private void Start()
+    {
+        GameManager.Instance.ScrapPanel = this;
     }
 
-    public void SendToBackup() {
+    public void SendToBackup()
+    {
         Transform t = transform.GetChild(2);
         t.SetParent(backup);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

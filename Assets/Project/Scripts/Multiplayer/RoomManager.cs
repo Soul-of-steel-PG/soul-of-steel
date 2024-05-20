@@ -15,6 +15,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        ResetValues();
+    }
+
+    public void ResetValues()
+    {
         roomIds = new List<int>();
         _roomList = new List<RoomInfo>();
     }

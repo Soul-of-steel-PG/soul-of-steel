@@ -5,8 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
-public interface IPilotCardView : ICardView
-{
+public interface IPilotCardView : ICardView {
     void SetCardUI(string cardName, string cardDescription, int scrapCost, Sprite imageSource, int health);
     void SelectAttack();
 
@@ -18,8 +17,7 @@ public interface IPilotCardView : ICardView
 }
 
 [Serializable]
-public class PilotCardView : CardView, IPilotCardView
-{
+public class PilotCardView : CardView, IPilotCardView {
     [Header("Pilot Card UI Components")] [SerializeField]
     private TMP_Text healthTMP;
 
@@ -28,7 +26,7 @@ public class PilotCardView : CardView, IPilotCardView
     private IPilotCardController _pilotCardController;
 
     public IPilotCardController PilotCardController {
-        get { return _pilotCardController ??= new PilotCardController(this); }
+        get { return _pilotCardController ??= new PilotCardController(this, GameManager.Instance, UIManager.Instance); }
     }
 
     private void Start()
@@ -93,6 +91,11 @@ public class PilotCardView : CardView, IPilotCardView
     public override void SetIsSelecting(bool isSelecting)
     {
         PilotCardController.IsSelecting(isSelecting);
+    }
+
+    public override string GetCardName()
+    {
+        return PilotCardController.GetCardName();
     }
 
     public override CardType GetCardType()

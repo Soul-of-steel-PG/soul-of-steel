@@ -10,5 +10,6 @@ public class MenuPanel : MonoBehaviour
     public void GoMenu()
     {
         UIManager.Instance.matchView.DisconnectPlayer();
+        GameManager.Instance.ResetValues();
     }
 }

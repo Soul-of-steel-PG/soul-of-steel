@@ -305,17 +305,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &400380243 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1540434449720256093, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-  m_PrefabInstance: {fileID: 1205737495}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e9e782c890a96640a16a6d5d525f7bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &496557035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -543,10 +532,6 @@ PrefabInstance:
     - target: {fileID: 821902648148392607, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -1.1494141
-      objectReference: {fileID: 0}
-    - target: {fileID: 967064467294064113, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 991977602702444371, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -916,18 +901,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6597386600426627524, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.2000122
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597386600426627524, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6910690616492862003, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.079956055
-      objectReference: {fileID: 0}
     - target: {fileID: 6948258460614032248, guid: 094270ca319b9404d9bae0c845c74cf3, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -1.1494141
@@ -1165,16 +1138,10 @@ MonoBehaviour:
   isFirstRound: 0
   movementTurn: 0
   attackTurn: 0
-  handPanel: {fileID: 0}
-  middlePanel: {fileID: 0}
-  scrapPanel: {fileID: 0}
   myEquipmentPanel: {fileID: 0}
   enemyEquipmentPanel: {fileID: 0}
   LocalPilotCardView: {fileID: 0}
   LocalPlayerName: 
-  currentPriority: 0
-  boardView: {fileID: 400380243}
-  playerList: []
   gameOver: 0
 --- !u!1001 &6631906648606776991
 PrefabInstance:

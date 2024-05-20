@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IChestCardView : IEquipmentCardView
-{
-    public void InitCard(int id, string cardName, string cardDescription,
-        int scrapCost, int scrapRecovery, Sprite imageSource, CardType type);
+public interface IChestCardView : IEquipmentCardView {
+    void InitCard(int id, string cardName, string cardDescription,
+        int scrapCost, int scrapRecovery, int shieldValue, Sprite imageSource, CardType type);
 
     CardType GetCardType();
     void GetEffect();
@@ -13,12 +12,11 @@ public interface IChestCardView : IEquipmentCardView
     void DestroyGo();
 }
 
-public class ChestCardView : EquipmentCardView, IChestCardView
-{
+public class ChestCardView : EquipmentCardView, IChestCardView {
     private IChestCardController _chestCardController;
 
     public IChestCardController ChestCardController {
-        get { return _chestCardController ??= new ChestCardController(this); }
+        get { return _chestCardController ??= new ChestCardController(this, GameManager.Instance, UIManager.Instance); }
     }
 
     protected override void Start()
@@ -31,9 +29,10 @@ public class ChestCardView : EquipmentCardView, IChestCardView
     }
 
     public void InitCard(int id, string cardName, string cardDescription,
-        int scrapCost, int scrapRecovery, Sprite imageSource, CardType type)
+        int scrapCost, int scrapRecovery, int shieldValue, Sprite imageSource, CardType type)
     {
-        ChestCardController.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, imageSource, type);
+        ChestCardController.InitCard(id, cardName, cardDescription, scrapCost, scrapRecovery, shieldValue, imageSource,
+            type);
     }
 
     public override void ManageLeftClick()
@@ -99,5 +98,10 @@ public class ChestCardView : EquipmentCardView, IChestCardView
     public override int GetId()
     {
         return ChestCardController.GetId();
+    }
+
+    public override string GetCardName()
+    {
+        return ChestCardController.GetCardName();
     }
 }

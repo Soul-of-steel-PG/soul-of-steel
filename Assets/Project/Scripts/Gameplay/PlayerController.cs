@@ -8,8 +8,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public interface IPlayerController
-{
+public interface IPlayerController {
     void SetPlayerId(int id);
     void DrawCards(int amount, bool fullDraw);
     void EquipCard(int index);
@@ -47,14 +46,18 @@ public interface IPlayerController
 
     void AddToScrapValue(int value);
     void SubtractFromScrapValue(int value);
+
+    int GetCurrentDamage();
+    IArmCardView GetArmCard();
 }
 
-public class PlayerController : IPlayerController
-{
+public class PlayerController : IPlayerController {
     #region Attributes
 
     private readonly IPlayerView _view;
     private readonly IGameManager _gameManager;
+    private readonly IEffectManager _effectManager;
+    private readonly IUIManager _uiManager;
 
     private readonly PlayerCardsInfo _shuffledDeck;
     private readonly List<ICardView> _hand;
@@ -88,17 +91,20 @@ public class PlayerController : IPlayerController
 
     #endregion
 
-    public PlayerController(IPlayerView view, IGameManager gameManager)
+    public PlayerController(IPlayerView view, IGameManager gameManager, IEffectManager effectManager,
+        IUIManager uiManager)
     {
         _view = view;
         _gameManager = gameManager;
+        _effectManager = effectManager;
+        _uiManager = uiManager;
 
         _hand = new List<ICardView>();
         _shuffledDeck = ScriptableObject.CreateInstance<PlayerCardsInfo>();
         _moving = false;
         _currentDegrees = 270;
         _currentCell = new Vector2(5, 5);
-        _scrapPoints = 15;
+        _scrapPoints = 1000;
     }
 
     #region Cards Management
@@ -160,13 +166,13 @@ public class PlayerController : IPlayerController
                 case CardType.Chest:
                     ((IChestCardView)card)?.InitCard(cardInfoStruct.Id, cardInfoStruct.CardName,
                         cardInfoStruct.Description, cardInfoStruct.Cost, cardInfoStruct.Recovery,
-                        cardInfoStruct.ImageSource, cardInfoStruct.TypeEnum);
+                        cardInfoStruct.Shield, cardInfoStruct.ImageSource, cardInfoStruct.TypeEnum);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-
+            card.SetIsSelecting(false);
             _hand.Add(card);
             _shuffledDeck.playerCards.RemoveAt(index);
             if (_shuffledDeck.playerCards.Count == 0) ShuffleDeck(false, false);
@@ -217,7 +223,7 @@ public class PlayerController : IPlayerController
 
     public void ShuffleDeck(bool firstTime, bool shuffle)
     {
-        List<CardInfoSerialized.CardInfoStruct> temporalDeck = _view.GetDeckInfo().playerCards.ToList();
+        List<CardInfoSerialized.CardInfoStruct> temporalDeck = _view.GetDeckInfo().PlayerCards.ToList();
         if (shuffle)
         {
             int n = temporalDeck.Count;
@@ -242,13 +248,12 @@ public class PlayerController : IPlayerController
     public void SelectCards(List<CardType> type, int amount, bool setSelecting = true)
     {
         bool has = false;
-        foreach (CardView card in _hand)
+        foreach (ICardView card in _hand)
         {
             if (type.Contains(card.GetCardType()))
             {
                 has = true;
                 card.SetIsSelecting(setSelecting);
-                GameManager.Instance.ValidateHealthStatus();
             }
         }
 
@@ -266,7 +271,7 @@ public class PlayerController : IPlayerController
     {
         _currentDamage = _extraDamage;
 
-        if (!_view.GetPv().IsMine) return;
+        if (!_view.PhotonViewIsMine) return;
 
         if (_weapon == null && _arm != null)
         {
@@ -287,12 +292,12 @@ public class PlayerController : IPlayerController
 
     public void SelectMovement()
     {
-        if (!_view.GetPv().IsMine) return;
+        if (!_view.PhotonViewIsMine) return;
 
         GameManager.Instance.OnSelectionConfirmedEvent += OnMovementSelected;
         if (_legs == null && _pilot != null)
         {
-            GameManager.Instance.OnSelectionConfirmed(0);
+            _gameManager.OnSelectionConfirmed(0);
         }
         else
         {
@@ -329,7 +334,7 @@ public class PlayerController : IPlayerController
 
         EffectManager.Instance.OnSelectedCellEvent -= CellSelected;
 
-        EffectManager.Instance.CellsSelected(_cellsSelected);
+        _effectManager.CellsSelected(_cellsSelected);
     }
 
     private void CellSelected(Vector2 index, bool select)
@@ -344,26 +349,29 @@ public class PlayerController : IPlayerController
 
     public void DoAttack(Vector2 index)
     {
-        if (GameManager.Instance.BoardView.GetBoardStatus()[(int)index.y][(int)index.x].CellController.GetCellType() !=
+        if (_gameManager.BoardView.GetBoardStatus()[(int)index.y][(int)index.x].CellController.GetCellType() !=
             CellType.Shady) return;
 
-        PlayerView otherPlayer =
-            GameManager.Instance.PlayerList.Find(p => p.PlayerController.GetPlayerId() != _playerId) as PlayerView;
+        IPlayerView otherPlayer =
+            _gameManager.PlayerList.Find(p => p.PlayerController.GetPlayerId() != _playerId);
 
-        if (GameManager.Instance.testing)
+        if (_gameManager.GetTesting())
             otherPlayer =
-                GameManager.Instance.PlayerList.Find(p => p.PlayerController.GetPlayerId() == _playerId) as PlayerView;
+                _gameManager.PlayerList.Find(p => p.PlayerController.GetPlayerId() == _playerId);
 
-        if (otherPlayer?.PlayerController.GetCurrentCell() == index)
+        if (otherPlayer.PlayerController.GetCurrentCell() == index)
         {
-            if (!GameManager.Instance.testing)
+            if (!_gameManager.GetTesting())
             {
-                otherPlayer.photonView.RPC("RpcReceivedDamage", RpcTarget.AllBuffered, 2,
-                    otherPlayer.PlayerController.GetPlayerId());
+                _view.GetPv().RPC("RpcDoDamage", RpcTarget.AllBuffered, _playerId, (int)index.x, (int)index.y);
+            }
+            else
+            {
+                otherPlayer.PlayerController.ReceivedDamage(_currentDamage, otherPlayer.PlayerController.GetPlayerId());
             }
         }
 
-        GameManager.Instance.OnLocalAttackDone();
+        _gameManager.OnLocalAttackDone();
         _view.SetAttackDone(true);
         GameManager.Instance.OnCellClickedEvent -= DoAttack;
     }
@@ -374,6 +382,7 @@ public class PlayerController : IPlayerController
         {
             _health -= damage;
             _pilot.SetHealthTMP(_health);
+            _gameManager.ValidateHealthStatus();
         }
     }
 
@@ -381,12 +390,12 @@ public class PlayerController : IPlayerController
     {
         if (_legs == null && _pilot != null)
         {
-            GameManager.Instance.OnMovementSelected(_pilot.PilotCardController.GetDefaultMovement(),
+            _gameManager.OnMovementSelected(_pilot.PilotCardController.GetDefaultMovement(),
                 (PlayerView)_view, GetMovementIterations());
         }
         else
         {
-            GameManager.Instance.OnMovementSelected(_legs.LegsCardController.GetMovements()[_currentMovementId],
+            _gameManager.OnMovementSelected(_legs.LegsCardController.GetMovements()[_currentMovementId],
                 (PlayerView)_view, GetMovementIterations());
         }
     }
@@ -397,33 +406,45 @@ public class PlayerController : IPlayerController
 
     private void SetArmCard(CardInfoSerialized.CardInfoStruct cardInfoStruct)
     {
-        IArmCardView card = (IArmCardView)_view.AddCardToPanel(cardInfoStruct.TypeEnum);
-        
-        card.InitCard(cardInfoStruct.Id, cardInfoStruct.CardName, cardInfoStruct.Description,
-            cardInfoStruct.Cost, cardInfoStruct.Recovery, cardInfoStruct.Damage, cardInfoStruct.AttackTypeEnum,
-            cardInfoStruct.AttackDistance, cardInfoStruct.AttackArea, cardInfoStruct.ImageSource,
-            cardInfoStruct.TypeEnum);
+        if (_view == null)
+        {
+            Debug.LogError("View is not initialized");
+            return;
+        }
 
+        IArmCardView card = (IArmCardView)_view.AddCardToPanel(cardInfoStruct.TypeEnum);
+
+        if (card == null)
+        {
+            Debug.LogError("Failed to add card to panel");
+            return;
+        }
+
+        card.InitCard(
+            cardInfoStruct.Id,
+            cardInfoStruct.CardName,
+            cardInfoStruct.Description,
+            cardInfoStruct.Cost,
+            cardInfoStruct.Recovery,
+            cardInfoStruct.Damage,
+            cardInfoStruct.AttackTypeEnum,
+            cardInfoStruct.AttackDistance,
+            cardInfoStruct.AttackArea,
+            cardInfoStruct.ImageSource,
+            cardInfoStruct.TypeEnum
+        );
 
         if (card.GetCardType() == CardType.Arm)
         {
-            if (_arm != null)
-            {
-                _arm.RemoveEffect();
-                _arm.DestroyGo();
-            }
-
+            _arm?.RemoveEffect();
+            _arm?.DestroyGo();
             _arm = card;
             _arm.GetEffect();
         }
         else if (card.GetCardType() == CardType.Weapon)
         {
-            if (_weapon != null)
-            {
-                _weapon.RemoveEffect();
-                _weapon.DestroyGo();
-            }
-
+            _weapon?.RemoveEffect();
+            _weapon?.DestroyGo();
             _weapon = card;
             _weapon.GetEffect();
         }
@@ -431,7 +452,19 @@ public class PlayerController : IPlayerController
 
     private void SetLegsCard(CardInfoSerialized.CardInfoStruct cardInfoStruct)
     {
+        if (_view == null)
+        {
+            Debug.LogError("View is not initialized");
+            return;
+        }
+
         ILegsCardView card = (ILegsCardView)_view.AddCardToPanel(cardInfoStruct.TypeEnum);
+
+        if (card == null)
+        {
+            Debug.LogError("Failed to add card to panel");
+            return;
+        }
 
         card.InitCard(cardInfoStruct.Id, cardInfoStruct.CardName,
             cardInfoStruct.Description, cardInfoStruct.Cost, cardInfoStruct.Recovery,
@@ -439,7 +472,7 @@ public class PlayerController : IPlayerController
 
         if (_legs != null)
         {
-            _legs.DestroyGo();
+            _legs?.DestroyGo();
         }
 
         _legs = card;
@@ -451,7 +484,7 @@ public class PlayerController : IPlayerController
 
         card.InitCard(cardInfoStruct.Id, cardInfoStruct.CardName,
             cardInfoStruct.Description, cardInfoStruct.Cost, cardInfoStruct.Recovery,
-            cardInfoStruct.ImageSource, cardInfoStruct.TypeEnum);
+            cardInfoStruct.Shield, cardInfoStruct.ImageSource, cardInfoStruct.TypeEnum);
 
         //Remove previous effect
         if (_bodyArmor != null)
@@ -470,16 +503,16 @@ public class PlayerController : IPlayerController
         CardInfoSerialized.CardInfoStruct cardInfoStruct =
             _shuffledDeck.playerCards.Find(c => c.TypeEnum == CardType.Pilot);
 
-        IPilotCardView card = (IPilotCardView)_view.AddCardToPanel(cardInfoStruct.TypeEnum);
+        IPilotCardView card = (IPilotCardView)_view.AddCardToPanel(CardType.Pilot);
 
         card.InitCard(cardInfoStruct.Id, cardInfoStruct.CardName,
             cardInfoStruct.Description, cardInfoStruct.Cost, cardInfoStruct.Recovery,
             cardInfoStruct.ImageSource, cardInfoStruct.Health, cardInfoStruct.TypeEnum,
-            cardInfoStruct.SerializedMovements[0], cardInfoStruct.Damage);
+            cardInfoStruct.SerializedMovements?[0], cardInfoStruct.Damage);
         _pilot = card;
         _health = _pilot.PilotCardController.GetHealth();
-        if (_view.GetPv().IsMine) _pilot.SetHealthTMP(_health);
-        else UIManager.Instance.matchView.UpdateEnemyLifeTMP(_health);
+        if (_view.PhotonViewIsMine) _pilot.SetHealthTMP(_health);
+        else _uiManager.UpdateEnemyLifeTMP(_health);
     }
 
     #endregion
@@ -488,9 +521,9 @@ public class PlayerController : IPlayerController
 
     private int GetMovementIterations()
     {
-        if (EffectManager.Instance.doubleMovementEffectActive)
+        if (_effectManager.GetDoubleMovementEffectActive())
         {
-            EffectManager.Instance.SetDoubleMovementEffectActive(false);
+            _effectManager.SetDoubleMovementEffectActive(false);
             return 2;
         }
 
@@ -505,6 +538,16 @@ public class PlayerController : IPlayerController
     public void SubtractFromScrapValue(int valueToSubtract)
     {
         _scrapPoints -= valueToSubtract;
+    }
+
+    public int GetCurrentDamage()
+    {
+        return _currentDamage;
+    }
+
+    public IArmCardView GetArmCard()
+    {
+        return _arm;
     }
 
     public bool GetMoving()
@@ -610,9 +653,9 @@ public class PlayerController : IPlayerController
     public void SetHealth(int amount)
     {
         _health = amount;
-        if (_playerId != GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId())
+        if (_playerId != _gameManager.LocalPlayerInstance.PlayerController.GetPlayerId())
         {
-            UIManager.Instance.matchView.UpdateEnemyLifeTMP(_health);
+            _uiManager.UpdateEnemyLifeTMP(_health);
         }
     }
 
@@ -635,6 +678,38 @@ public class PlayerController : IPlayerController
     {
         SetArmCard(cardInfoStruct);
     }
+
+    public PlayerCardsInfo Debug_GetShuffledDeck()
+    {
+        return _shuffledDeck;
+    }
+
+    public void Debug_SetPilotCard()
+    {
+        SetPilotCard();
+    }
+
+    public void Debug_AddCardToHand(ICardView card)
+    {
+        _hand.Add(card);
+    }
+
+    public IArmCardView Debug_GetWeapon()
+    {
+        return _weapon;
+    }
+
+    public void Debug_SetArm(IArmCardView card, bool isWeapon)
+    {
+        if (isWeapon) _weapon = card;
+        else _arm = card;
+    }
+
+    public void Debug_SetPilot(IPilotCardView pilot)
+    {
+        _pilot = pilot;
+    }
+
 #endif
 
     #endregion

@@ -105,6 +105,7 @@ public class RechargePhase : Phase
 
         _effectCards.Clear();
         GameManager.Instance.ChangePhase(new PrincipalPhase(matchView));
+        EffectManager.Instance.IncrementRadarSabotageRoundsCount();
         GameManager.Instance.OnCardSelectedEvent -= CardSelected;
         GameManager.Instance.OnCardSelectingFinishedEvent -= AllCardsSelected;
         EffectManager.Instance.OnAllEffectsFinishedEvent -= SetEffectTurn;

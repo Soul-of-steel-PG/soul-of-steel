@@ -8,8 +8,14 @@ using Unity.VisualScripting;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviourSingleton<UIManager>
-{
+public interface IUIManager {
+    void UpdateEnemyLifeTMP(int health);
+
+    void ShowCardPanel(string cardName, string cardDescription,
+        int scrapCost, Sprite imageSource, bool activate = true);
+}
+
+public class UIManager : MonoBehaviourSingleton<UIManager>, IUIManager {
     public TMP_InputField nickname;
 
     [SerializeField] private GameObject gamePanel;
@@ -63,11 +69,12 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         _currentCardPanel.gameObject.SetActive(activate);
     }
 
-    public void ShowSelectionPanel(int optionsAmount, List<string> optionNames, bool activate = true)
+    public void ShowSelectionPanel(int optionsAmount, List<string> optionNames, Sprite imageSource,
+        bool activate = true)
     {
         FindOrInstantiatePanel(ref _currentSelectionPanel, selectionPanel);
 
-        if (optionNames != null) _currentSelectionPanel.Init(optionsAmount, optionNames);
+        if (optionNames != null) _currentSelectionPanel.Init(optionsAmount, imageSource, optionNames);
         _currentSelectionPanel.gameObject.SetActive(activate);
     }
 
@@ -95,10 +102,17 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     protected override void OnDestroy()
     {
-        if (GameManager.HasInstance()) {
-            if (!GameManager.Instance.testing) {
+        if (GameManager.HasInstance())
+        {
+            if (!GameManager.Instance.testing)
+            {
                 nickname.onValueChanged.RemoveAllListeners();
             }
         }
+    }
+
+    public void UpdateEnemyLifeTMP(int health)
+    {
+        matchView.UpdateEnemyLifeTMP(health);
     }
 }

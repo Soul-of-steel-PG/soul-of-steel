@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-public class EffectManager : MonoBehaviourSingleton<EffectManager>
-{
+public interface IEffectManager {
+    void CellsSelected(List<Vector2> cellsSelected);
+    bool GetDoubleMovementEffectActive();
+    void SetDoubleMovementEffectActive(bool isActive);
+}
+
+public class EffectManager : MonoBehaviourSingleton<EffectManager>, IEffectManager {
     public int effectTurn;
     private MineEffectController _mineEffectController;
 
@@ -108,17 +113,40 @@ public class EffectManager : MonoBehaviourSingleton<EffectManager>
     #region RadarSabotage
 
     private RadarSabotageEffectController _radarSabotageEffectController;
+    public bool isRadarSabotageActive { get; set; } = false;
+    public int radarSabotageRoundsCount = 0;
 
     private void ActivateRadarSabotageEffectController(int originId)
     {
+        Debug.Log("Activating radar sabotage");
         _radarSabotageEffectController = new RadarSabotageEffectController();
         _radarSabotageEffectController.Activate(originId);
     }
 
     private void DeactivateRadarSabotageEffectController(int originId)
     {
+        Debug.Log("Deactivating radar sabotage");
         _radarSabotageEffectController ??= new RadarSabotageEffectController();
         _radarSabotageEffectController.Deactivate(originId);
+    }
+
+    public void IncrementRadarSabotageRoundsCount()
+    {
+        if (isRadarSabotageActive)
+        {
+            Debug.Log("radarSabotageRoundsCount " + radarSabotageRoundsCount);
+            if (radarSabotageRoundsCount <= 1)
+            {
+                ActivateRadarSabotageEffectController(GameManager.Instance.LocalPlayerInstance.PlayerController
+                    .GetPlayerId());
+                radarSabotageRoundsCount++;
+            }
+            else
+            {
+                DeactivateRadarSabotageEffectController(GameManager.Instance.LocalPlayerInstance.PlayerController
+                    .GetPlayerId());
+            }
+        }
     }
 
     #endregion
@@ -152,6 +180,11 @@ public class EffectManager : MonoBehaviourSingleton<EffectManager>
         OnCellsSelectedEvent?.Invoke(cellsSelected);
     }
 
+    public bool GetDoubleMovementEffectActive()
+    {
+        return doubleMovementEffectActive;
+    }
+
     public void CellSelected(Vector2 index, bool select)
     {
         OnSelectedCellEvent?.Invoke(index, select);
@@ -164,7 +197,8 @@ public class EffectManager : MonoBehaviourSingleton<EffectManager>
 
     public void GetEffect(int effectId, int originId)
     {
-        switch (effectId) {
+        switch (effectId)
+        {
             case 0:
                 PutMines(originId, 3);
                 break;
@@ -189,13 +223,13 @@ public class EffectManager : MonoBehaviourSingleton<EffectManager>
             case 38:
                 ActivateRadarSabotageEffectController(originId);
                 break;
-
         }
     }
 
     public void RemoveEffect(int effectId, int originId)
     {
-        switch (effectId) {
+        switch (effectId)
+        {
             case 26:
                 DeactivateGravitationalImpulse(originId);
                 break;
