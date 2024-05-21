@@ -48,6 +48,11 @@ public class ArmCardView : EquipmentCardView, IArmCardView {
         ArmCardController.Select(false);
     }
 
+    public override ICardView GetCardView()
+    {
+        return this;
+    }
+
     public override void ManageRightClick()
     {
         ArmCardController.ManageRightClick();

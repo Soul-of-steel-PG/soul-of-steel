@@ -2,12 +2,10 @@
 using Photon.Pun;
 using UnityEngine;
 
-public interface IBarrierEffectController : IEffectController
-{
+public interface IBarrierEffectController : IEffectController {
 }
 
-public class BarrierEffectController : EffectController, IBarrierEffectController
-{
+public class BarrierEffectController : EffectController, IBarrierEffectController {
     public List<Vector2> BarrierCells { private set; get; }
     private readonly int _barrierAmount;
 
@@ -34,8 +32,9 @@ public class BarrierEffectController : EffectController, IBarrierEffectControlle
                 .CellController.GetCellType()) return;
         GameManager.Instance.BoardView.SetBoardStatusCellType(index, select ? CellType.Barrier : CellType.Normal);
 
-        if (!GameManager.Instance.testing) {
-            GameManager.Instance.LocalPlayerInstance.photonView.RPC("RpcPutBarrier",
+        if (!GameManager.Instance.testing)
+        {
+            GameManager.Instance.LocalPlayerInstance.GetPv().RPC("RpcPutBarrier",
                 RpcTarget.AllBuffered, (int)index.y, (int)index.x, true);
         }
     }

@@ -20,6 +20,8 @@ public interface ICardView {
     CardType GetCardType();
     void SetIsSelecting(bool isSelecting);
     string GetCardName();
+    int GetId();
+    ICardView GetCardView();
 }
 
 [Serializable]
@@ -72,6 +74,7 @@ public abstract class CardView : MonoBehaviour, ICardView, IPointerClickHandler 
     public abstract void Select(bool deselect = false);
     public abstract void Dismiss();
     public abstract int GetId();
+    public abstract ICardView GetCardView();
 
     public void SetDismissTextSizes()
     {

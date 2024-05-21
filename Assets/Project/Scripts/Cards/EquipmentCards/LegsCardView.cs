@@ -40,6 +40,11 @@ public class LegsCardView : EquipmentCardView, ILegsCardView {
             scrapRecovery, movements, imageSource, type);
     }
 
+    public override ICardView GetCardView()
+    {
+        return this;
+    }
+
     public override void ManageLeftClick()
     {
         LegsCardController.Select(false);

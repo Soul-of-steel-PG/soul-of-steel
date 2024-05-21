@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Sirenix.OdinInspector;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IMatchView {
@@ -68,6 +69,8 @@ public class MatchView : MonoBehaviour, IMatchView {
 
             orientationText.text = $"Orientacion: {orientationString}";
         }
+
+        Debug.Log($"{PhotonNetwork.GetPing()}");
     }
 
     [Button]

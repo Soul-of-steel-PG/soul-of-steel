@@ -110,23 +110,23 @@ public abstract class CardController : ICardController {
                 case CardType.Weapon:
                 case CardType.Arm:
                     _gameManager.OnCardSelected(_gameManager.LocalPlayerInstance,
-                        _view.GetGameObject().GetComponent<ArmCardView>(), _selected);
+                        (IArmCardView)_view.GetCardView(), _selected);
                     break;
                 case CardType.CampEffect:
                 case CardType.Hacking:
                     _gameManager.OnCardSelected(_gameManager.LocalPlayerInstance,
-                        _view.GetGameObject().GetComponent<EffectCardView>(), _selected);
+                        (IEffectCardView)_view.GetCardView(), _selected);
                     break;
                 case CardType.Generator:
                     break;
                 case CardType.Legs:
                     _gameManager.OnCardSelected(_gameManager.LocalPlayerInstance,
-                        _view.GetGameObject().GetComponent<LegsCardView>(), _selected);
+                        (ILegsCardView)_view.GetCardView(), _selected);
                     break;
                 case CardType.Armor:
                 case CardType.Chest:
                     _gameManager.OnCardSelected(_gameManager.LocalPlayerInstance,
-                        _view.GetGameObject().GetComponent<EquipmentCardView>(), _selected);
+                        (IEquipmentCardView)_view.GetCardView(), _selected);
                     break;
                 default:
                     Debug.Log($"CARD NOT IMPLEMENTED");
@@ -189,4 +189,27 @@ public abstract class CardController : ICardController {
     {
         return CardName;
     }
+
+    #region Debug
+
+#if UNITY_EDITOR
+
+    public void Debug_SetSelected(bool set)
+    {
+        _selected = set;
+    }
+
+    public void Debug_SetIsSelecting(bool set)
+    {
+        _isSelecting = set;
+    }
+
+    public void Debug_SetType(CardType type)
+    {
+        Type = type;
+    }
+
+#endif
+
+    #endregion
 }

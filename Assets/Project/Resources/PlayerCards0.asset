@@ -13,59 +13,22 @@ MonoBehaviour:
   m_Name: PlayerCards0
   m_EditorClassIdentifier: 
   playerCards:
-  - Id: 23
-    CardName: 'Potenciador G.F.A '
-    Type: Brazo
-    TypeEnum: 6
-    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
-      calculo de da\xF1o"
-    Cost: 2
-    Energy: 2
+  - Id: 0
+    CardName: Franja Minada de Tulik
+    Type: Campo
+    TypeEnum: 3
+    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
+      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
+      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
+      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
+      de cualquier unidad"
+    Cost: 3
+    Energy: 1
     Damage: 0
-    Shield: 2
+    Shield: 0
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
-    Health: 0
-    SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
-    Movements: 
-    AttackType: 
-  - Id: 23
-    CardName: 'Potenciador G.F.A '
-    Type: Brazo
-    TypeEnum: 6
-    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
-      calculo de da\xF1o"
-    Cost: 2
-    Energy: 2
-    Damage: 0
-    Shield: 2
-    Recovery: 0
-    IsCampEffect: 0
-    ImageSource: {fileID: 0}
-    Health: 0
-    SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
-    Movements: 
-    AttackType: 
-  - Id: 26
-    CardName: Impulsor Gravitacional
-    Type: Pecho
-    TypeEnum: 8
-    Description: Este equipo te da la cualidad Volador, lo que te permite ignorar
-      las dificultades del terreno
-    Cost: 4
-    Energy: 2
-    Damage: 0
-    Shield: 3
-    Recovery: 0
-    IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: ee07ae6294521ca459008d94587dc830, type: 3}
     Health: 0
     SerializedMovements: []
     AttackTypeEnum: 0
@@ -84,7 +47,7 @@ MonoBehaviour:
     Shield: 0
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 8157b30a70bd59142a5025c7ef7fc7e4, type: 3}
     Health: 0
     SerializedMovements: []
     AttackTypeEnum: 0
@@ -92,98 +55,63 @@ MonoBehaviour:
     AttackArea: 0
     Movements: 
     AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
+  - Id: 18
+    CardName: Rifle de Francotirador Electromagnetico
+    Type: Arma
+    TypeEnum: 1
+    Description: 
     Cost: 3
     Energy: 1
-    Damage: 0
+    Damage: 6
     Shield: 0
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 9301ab9b2a61ff14a99c2797a07ed86b, type: 3}
     Health: 0
     SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
-    Movements: 
-    AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
+    AttackTypeEnum: 1
+    AttackDistance: 4
+    AttackArea: 5
+    Movements: 0
+    AttackType: Linearecta
+  - Id: 20
+    CardName: Espada de Plasma
+    Type: Arma
+    TypeEnum: 1
+    Description: 
     Cost: 3
-    Energy: 1
-    Damage: 0
+    Energy: 2
+    Damage: 7
     Shield: 0
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 28850a1717052c148b75110002fb610a, type: 3}
     Health: 0
     SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
-    Movements: 
-    AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
+    AttackTypeEnum: 3
+    AttackDistance: 3
+    AttackArea: 2
+    Movements: 0
+    AttackType: Cono
+  - Id: 22
+    CardName: Brazo escudo
+    Type: Brazo
+    TypeEnum: 6
+    Description: 
     Cost: 3
     Energy: 1
-    Damage: 0
-    Shield: 0
+    Damage: 1
+    Shield: 5
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 3f9727ce397137749b67915cd2a0dabc, type: 3}
     Health: 0
     SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
+    AttackTypeEnum: 1
+    AttackDistance: 1
+    AttackArea: 1
     Movements: 
-    AttackType: 
-  - Id: 0
-    CardName: Franja Minada de Tulik
-    Type: Campo
-    TypeEnum: 3
-    Description: "Al activar esta carta coloca 3 cartas de mina en el cuadrante a
-      una distancia mayor de tres \ncuadros de cualquier unidad, si una unidad cruzar
-      sobre una mina recibe 3 puntos de da\xF1o, \nuna vez por turno el jugador inicial
-      puede colocar una mina en el cuadrante a una distancia mayor \nde tres cuadors
-      de cualquier unidad"
-    Cost: 3
-    Energy: 1
-    Damage: 0
-    Shield: 0
-    Recovery: 0
-    IsCampEffect: 0
-    ImageSource: {fileID: 0}
-    Health: 0
-    SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
-    Movements: 
-    AttackType: 
+    AttackType: Linearecta
   - Id: 23
     CardName: 'Potenciador G.F.A '
     Type: Brazo
@@ -192,31 +120,50 @@ MonoBehaviour:
       calculo de da\xF1o"
     Cost: 2
     Energy: 2
-    Damage: 0
+    Damage: 1
     Shield: 2
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 69600ff3c90cfcb49b20c98ecab1b0a1, type: 3}
     Health: 0
     SerializedMovements: []
-    AttackTypeEnum: 0
-    AttackDistance: 0
-    AttackArea: 0
+    AttackTypeEnum: 1
+    AttackDistance: 1
+    AttackArea: 1
     Movements: 
-    AttackType: 
-  - Id: 23
-    CardName: 'Potenciador G.F.A '
+    AttackType: Linearecta
+  - Id: 24
+    CardName: Brazo fortificado
     Type: Brazo
     TypeEnum: 6
-    Description: "Destruyendo esta pieza puedes darle a tu arma un +2 durante el
-      calculo de da\xF1o"
-    Cost: 2
-    Energy: 2
-    Damage: 0
+    Description: 
+    Cost: 3
+    Energy: 1
+    Damage: 1
     Shield: 2
     Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 5929c4490565dab48b4cad87a6fa3f0b, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 1
+    AttackDistance: 1
+    AttackArea: 1
+    Movements: 
+    AttackType: Linearecta
+  - Id: 26
+    CardName: Impulsor Gravitacional
+    Type: Pecho
+    TypeEnum: 8
+    Description: Este equipo te da la cualidad Volador, lo que te permite ignorar
+      las dificultades del terreno
+    Cost: 4
+    Energy: 2
+    Damage: 0
+    Shield: 3
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 6cf85158a3552b749b0acecb5252060e, type: 3}
     Health: 0
     SerializedMovements: []
     AttackTypeEnum: 0
@@ -224,27 +171,293 @@ MonoBehaviour:
     AttackArea: 0
     Movements: 
     AttackType: 
-  - Id: 33
-    CardName: DefaultPilot
-    Type: 
-    TypeEnum: 0
-    Description: Default pilot
-    Cost: 1
-    Energy: 2
-    Damage: 3
+  - Id: 27
+    CardName: Coraza Pesada
+    Type: Pecho
+    TypeEnum: 8
+    Description: 
+    Cost: 3
+    Energy: 1
+    Damage: 0
     Shield: 4
-    Recovery: 5
+    Recovery: 0
     IsCampEffect: 0
-    ImageSource: {fileID: 0}
+    ImageSource: {fileID: 21300000, guid: 83a2fd6fcc6c2114bbf4211ef4701a76, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 28
+    CardName: Blindaje en Aerosol
+    Type: Pecho
+    TypeEnum: 8
+    Description: 
+    Cost: 1
+    Energy: 1
+    Damage: 0
+    Shield: 2
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 7254f2613cc63c547a47d674bc2235e9, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 29
+    CardName: Placas Seramicas
+    Type: Pecho
+    TypeEnum: 8
+    Description: 
+    Cost: 2
+    Energy: 1
+    Damage: 0
+    Shield: 2
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 58c68918e0b993741a1610661554d839, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 30
+    CardName: 'Piernas de Crustaceo '
+    Type: Piernas
+    TypeEnum: 7
+    Description: "Despues de la seleccion de maniobras puedes mover  1 \u2190 0 1
+      \u2192 sin girar tu punto de vista"
+    Cost: 4
+    Energy: 1
+    Damage: 0
+    Shield: 3
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 2945d6ab41dbc80458b2328b14145293, type: 3}
+    Health: 0
+    SerializedMovements:
+    - steps:
+      - Steps: 2
+        Direction: "\u2191"
+      fullStrings: "2 \u2191, 0\xBA"
+      degrees: 00000000
+    - steps:
+      - Steps: 3
+        Direction: "\u2192"
+      fullStrings: "3 \u2192, 0\xBA"
+      degrees: 00000000
+    - steps:
+      - Steps: 3
+        Direction: "\u2190"
+      fullStrings: "3 \u2190, 0\xBA"
+      degrees: 00000000
+    - steps:
+      - Steps: 0
+        Direction: 
+      fullStrings: "0, 90\xBA  o 180\xBA "
+      degrees: 5a000000b4000000
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: "1) 2 \u2191, 0\xBA\n2) 3 \u2192, 0\xBA\n3) 3 \u2190, 0\xBA \n4) 0,
+      90\xBA \u2B82 o 180\xBA \u2B82"
+    AttackType: 
+  - Id: 31
+    CardName: Impulsores Vectoriales
+    Type: Piernas
+    TypeEnum: 7
+    Description: 
+    Cost: 4
+    Energy: 1
+    Damage: 0
+    Shield: 3
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 102b773c4fc2b3f4e84486e0356d9b64, type: 3}
+    Health: 0
+    SerializedMovements:
+    - steps:
+      - Steps: 3
+        Direction: "\u2191"
+      fullStrings: "3 \u2191"
+      degrees: ffffffff
+    - steps:
+      - Steps: 2
+        Direction: "\u2191"
+      - Steps: 2
+        Direction: "\u2192"
+      fullStrings: "2 \u2191, 2\u2192, 90\xBA"
+      degrees: 5a000000
+    - steps:
+      - Steps: 2
+        Direction: "\u2191"
+      - Steps: 2
+        Direction: "\u2192"
+      fullStrings: "2 \u2191, 2\u2192, 90\xBA"
+      degrees: 5a000000
+    - steps:
+      - Steps: 3
+        Direction: "\u2191"
+      fullStrings: "3 \u2191, 180\xBA"
+      degrees: b4000000
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: "1) 3 \u2191 \n2) 2 \u2191, 2\u2192, 90\xBA\n3) 2 \u2191, 2\u2192,
+      90\xBA\n4) 3 \u2191, 180\xBA\u2B82"
+    AttackType: 
+  - Id: 32
+    CardName: Propulsores Turbo Cargados
+    Type: Piernas
+    TypeEnum: 7
+    Description: 
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 1
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 0cd0f5a23455e2e4aac43a4a44da6490, type: 3}
+    Health: 0
+    SerializedMovements:
+    - steps:
+      - Steps: 4
+        Direction: "\u2191"
+      fullStrings: "4 \u2191"
+      degrees: ffffffff
+    - steps:
+      - Steps: 3
+        Direction: "\u2191"
+      - Steps: 2
+        Direction: "\u2192"
+      fullStrings: "3 \u2191, 2\u2192, 90\xBA"
+      degrees: 5a000000
+    - steps:
+      - Steps: 3
+        Direction: "\u2191"
+      - Steps: 2
+        Direction: "\u2192"
+      fullStrings: "3 \u2191, 2\u2192, 90\xBA"
+      degrees: 5a000000
+    - steps:
+      - Steps: 4
+        Direction: "\u2191"
+      fullStrings: "4 \u2191, 180\xBA"
+      degrees: b4000000
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: "1) 4 \u2191 \n2) 3 \u2191, 2\u2192, 90\xBA\n3) 3 \u2191, 2\u2192,
+      90\xBA\n4) 4 \u2191, 180\xBA\u2B82"
+    AttackType: 
+  - Id: 34
+    CardName: Teletransportador de Dimetria
+    Type: Campo
+    TypeEnum: 3
+    Description: Permite al ususario seleccionar una casilla para teletransportarse
+      antes de ejecutar los movimientos
+    Cost: 0
+    Energy: 0
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 2ba0bf6094638904586f5b52217619e8, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 35
+    CardName: Escudo de roble
+    Type: Campo
+    TypeEnum: 3
+    Description: "Permite al usuario resistir el da\xF1o de las minas por un turno"
+    Cost: 0
+    Energy: 0
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 02e618095db8991448114e0ac2a01df4, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 36
+    CardName: Bloqueo Tactico Work Port
+    Type: Campo
+    TypeEnum: 3
+    Description: Posiciona una barrera en una casilla, ningun jugador puede moverse
+      a traves de esa casilla, en caso de que un jugador intente moverse a traves
+      de la casilla, no hara ningun movimiento en absoluto
+    Cost: 3
+    Energy: 1
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: c5e0420b3b4239e43b1f58053d9cec08, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
+    AttackArea: 0
+    Movements: 
+    AttackType: 
+  - Id: 37
+    CardName: Piloto Veterano En Tecnocombates
+    Type: Piloto
+    TypeEnum: 0
+    Description: "El Piloto Veterano en Tecnocombates: experto en batallas, inspira
+      confianza y temor. Su maestr\xEDa en el mecha es incomparable."
+    Cost: 0
+    Energy: 1
+    Damage: 1
+    Shield: 2
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 0eb951631c828084291d94236f9706ed, type: 3}
     Health: 10
     SerializedMovements:
     - steps:
       - Steps: 2
         Direction: "\u2191"
-      fullStrings: 
-      degrees: 5a000000
+      fullStrings: "2 \u2191, 270\xBA"
+      degrees: 0e010000
     AttackTypeEnum: 1
     AttackDistance: 1
+    AttackArea: 1
+    Movements: "1) 2 \u2191, 270\xBA"
+    AttackType: Linearecta
+  - Id: 38
+    CardName: Sabotaje de radar
+    Type: Campo
+    TypeEnum: 3
+    Description: "Elimina la visi\xF3n del enemigo sobre el  tablero."
+    Cost: 0
+    Energy: 0
+    Damage: 0
+    Shield: 0
+    Recovery: 0
+    IsCampEffect: 0
+    ImageSource: {fileID: 21300000, guid: 9dfc09fdb859f7447b3ec53d3c7d16ba, type: 3}
+    Health: 0
+    SerializedMovements: []
+    AttackTypeEnum: 0
+    AttackDistance: 0
     AttackArea: 0
     Movements: 
     AttackType: 

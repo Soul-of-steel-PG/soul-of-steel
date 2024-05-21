@@ -44,6 +44,11 @@ public class PilotCardView : CardView, IPilotCardView {
         PilotCardController.Select(deselect);
     }
 
+    public override ICardView GetCardView()
+    {
+        return this;
+    }
+
     public override void Dismiss()
     {
         PilotCardController.DismissCard();
