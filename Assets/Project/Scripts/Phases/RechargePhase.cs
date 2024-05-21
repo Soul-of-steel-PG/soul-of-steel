@@ -8,7 +8,7 @@ public class RechargePhase : Phase
 {
     private bool _allCardSelected;
     private bool _allEffectsDone;
-    private List<CardView> _effectCards;
+    private List<ICardView> _effectCards;
 
     public RechargePhase(IMatchView matchView) : base(matchView)
     {
@@ -16,7 +16,7 @@ public class RechargePhase : Phase
         GameManager.Instance.OnCardSelectingFinishedEvent += AllCardsSelected;
         EffectManager.Instance.OnAllEffectsFinishedEvent += SetEffectTurn;
 
-        _effectCards = new List<CardView>();
+        _effectCards = new List<ICardView>();
     }
 
     public override IEnumerator Start()
@@ -111,7 +111,7 @@ public class RechargePhase : Phase
         EffectManager.Instance.OnAllEffectsFinishedEvent -= SetEffectTurn;
     }
 
-    private void CardSelected(PlayerView playerView, CardView card, bool selected)
+    private void CardSelected(IPlayerView playerView, ICardView card, bool selected)
     {
         if (selected) _effectCards.Add(card);
         else _effectCards.Remove(card);

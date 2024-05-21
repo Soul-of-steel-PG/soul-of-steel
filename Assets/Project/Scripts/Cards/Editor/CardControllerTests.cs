@@ -29,122 +29,107 @@ namespace SoulOfSteelTests {
             return Substitute.For<CardController>(_mockView, _mockGameManager, _mockUIManager);
         }
 
-        #region DismissCard
-
         [Test]
-        public void DismissCard_MovesCardToScrapPanel()
+        public void Select_InAnimation_ReturnsEarly()
         {
             // Arrange
-            var cardController = CreateSystem();
-            var _mockScrapPanel = Substitute.For<IScrapPanel>();
-            _mockScrapPanel.GetTransform().Returns(Arg.Any<Transform>());
-            _mockScrapPanel.GetTransform().TransformPoint(Arg.Any<Vector3>()).Returns(Vector3.zero);
-
-            // Mocking DOTween's DOMove and OnComplete
-            Tween tween = Substitute.For<Tween>();
-            _mockScrapPanel.GetTransform().DOMove(_mockScrapPanel.GetTransform().position, 0.5f).Returns(tween);
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
 
             // Act
-            cardController.DismissCard();
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Select();
 
             // Assert
-            _gameObject.transform.Received(1).DOMove(Vector3.zero, 0.5f);
-            Assert.AreSame(scrapPanelTransform, _gameObject.transform.parent);
-            Assert.AreEqual(2, _gameObject.transform.GetSiblingIndex());
+            _mockView.DidNotReceive().SelectAnimation(Arg.Any<bool>());
         }
 
         [Test]
-        public void DismissCard_AnimationSequence()
+        public void Select_CardsAlreadySelectedAndNotCurrentlySelected_ReturnsEarly()
         {
             // Arrange
-            var cardController = CreateSystem();
-            var scrapPanelTransform = new GameObject().transform;
-            _mockScrapPanel.GetTransform().Returns(scrapPanelTransform);
-            scrapPanelTransform.TransformPoint(Arg.Any<Vector3>()).Returns(Vector3.zero);
-
-            // Mocking DOTween's DOMove and OnComplete
-            Tween tween = Substitute.For<Tween>();
-            _gameObject.transform.DOMove(Vector3.zero, 0.5f).Returns(tween);
-            tween.OnComplete(Arg.Do<TweenCallback>(callback => callback.Invoke())).Returns(tween);
-
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
+            _mockGameManager.LocalPlayerInstance.PlayerController.GetCardsSelected().Returns(true);
             // Act
-            cardController.DismissCard();
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Select();
 
             // Assert
-            _gameObject.transform.Received(1).DOMove(Vector3.zero, 0.5f);
-            Assert.IsTrue(_mockPlayerView._inAnimation);
-            tween.Received(1).OnComplete(Arg.Any<TweenCallback>());
+            _mockView.DidNotReceive().SelectAnimation(Arg.Any<bool>());
         }
 
         [Test]
-        public void DismissCard_SetsInAnimationToTrue()
+        public void Select_NotSelectingAndAlreadySelected_DeselectsCard()
         {
             // Arrange
-            var cardController = CreateSystem();
-            var scrapPanelTransform = new GameObject().transform;
-            _mockScrapPanel.GetTransform().Returns(scrapPanelTransform);
-            scrapPanelTransform.TransformPoint(Arg.Any<Vector3>()).Returns(Vector3.zero);
-
-            // Mocking DOTween's DOMove and OnComplete
-            Tween tween = Substitute.For<Tween>();
-            _gameObject.transform.DOMove(Vector3.zero, 0.5f).Returns(tween);
-            tween.OnComplete(Arg.Do<TweenCallback>(callback => callback.Invoke())).Returns(tween);
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
+            _mockGameManager.LocalPlayerInstance.PlayerController.GetCardsSelected().Returns(true);
 
             // Act
-            cardController.DismissCard();
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Debug_SetSelected(true);
+            systemUnderTest.Debug_SetIsSelecting(false);
+            systemUnderTest.Select(true);
 
             // Assert
-            Assert.IsTrue(_mockPlayerView._inAnimation);
+            Assert.IsFalse(systemUnderTest.GetSelected());
         }
 
         [Test]
-        public void DismissCard_SetsInAnimationToFalse()
+        public void Select_SelectingAndCantAffordCard_ReturnsEarly()
         {
             // Arrange
-            var cardController = CreateSystem();
-            var scrapPanelTransform = new GameObject().transform;
-            _mockScrapPanel.GetTransform().Returns(scrapPanelTransform);
-            scrapPanelTransform.TransformPoint(Arg.Any<Vector3>()).Returns(Vector3.zero);
-
-            // Mocking DOTween's DOMove and OnComplete
-            Tween tween = Substitute.For<Tween>();
-            _gameObject.transform.DOMove(Vector3.zero, 0.5f).Returns(tween);
-            tween.OnComplete(Arg.Do<TweenCallback>(callback => callback.Invoke())).Returns(tween);
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
+            _mockGameManager.LocalPlayerInstance.PlayerController.GetCardsSelected().Returns(false);
+            _mockGameManager.LocalPlayerInstance.PlayerController.TryPayingForCard(Arg.Any<int>()).Returns(false);
 
             // Act
-            cardController.DismissCard();
-
-            // Simulate OnComplete callback
-            // tween.OnCompleteReceived().Invoke();
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Debug_SetIsSelecting(true);
+            systemUnderTest.Select();
 
             // Assert
-            Assert.IsFalse(_mockPlayerView._inAnimation);
+            _mockView.DidNotReceive().SelectAnimation(Arg.Any<bool>());
         }
 
         [Test]
-        public void DismissCard_SetsDismissTextSizes()
+        public void Select_SelectingAndCanAffordCard_TogglesSelectedAndCallsSelectAnimation()
         {
             // Arrange
-            var cardController = CreateSystem();
-            var scrapPanelTransform = new GameObject().transform;
-            _mockScrapPanel.GetTransform().Returns(scrapPanelTransform);
-            scrapPanelTransform.TransformPoint(Arg.Any<Vector3>()).Returns(Vector3.zero);
-
-            // Mocking DOTween's DOMove and OnComplete
-            Tween tween = Substitute.For<Tween>();
-            _gameObject.transform.DOMove(Vector3.zero, 0.5f).Returns(tween);
-            tween.OnComplete(Arg.Do<TweenCallback>(callback => callback.Invoke())).Returns(tween);
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
+            _mockGameManager.LocalPlayerInstance.PlayerController.GetCardsSelected().Returns(false);
+            _mockGameManager.LocalPlayerInstance.PlayerController.TryPayingForCard(Arg.Any<int>()).Returns(true);
 
             // Act
-            cardController.DismissCard();
-
-            // Simulate OnComplete callback
-            // tween.OnCompleteReceived().Invoke();
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Debug_SetIsSelecting(true);
+            systemUnderTest.Select();
 
             // Assert
-            _mockView.Received(1).SetDismissTextSizes();
+            Assert.IsTrue(systemUnderTest.GetSelected());
+            _mockView.Received(1).SelectAnimation(true);
         }
 
-        #endregion
+        [Test]
+        public void Select_CardTypeSelectionLogic()
+        {
+            // Arrange
+            _mockGameManager.LocalPlayerInstance.Returns(Substitute.For<IPlayerView>());
+            _mockGameManager.LocalPlayerInstance.PlayerController.GetCardsSelected().Returns(false);
+            _mockGameManager.LocalPlayerInstance.PlayerController.TryPayingForCard(Arg.Any<int>()).Returns(true);
+            var mockCardView = Substitute.For<IArmCardView>();
+            _mockView.GetCardView().Returns(mockCardView);
+
+            // Act
+            CardController systemUnderTest = CreateSystem();
+            systemUnderTest.Debug_SetIsSelecting(true);
+            systemUnderTest.Debug_SetType(CardType.Arm);
+            systemUnderTest.Select();
+
+            // Assert
+            // Verify correct behavior based on card type (Weapon, Arm, CampEffect, Hacking, Legs, Armor, Chest)
+            // Example for Weapon type:
+            _mockGameManager.Received().OnCardSelected(_mockGameManager.LocalPlayerInstance,
+                mockCardView, true);
+        }
     }
 }

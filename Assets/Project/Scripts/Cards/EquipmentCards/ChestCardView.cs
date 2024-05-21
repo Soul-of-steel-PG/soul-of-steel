@@ -40,6 +40,11 @@ public class ChestCardView : EquipmentCardView, IChestCardView {
         ChestCardController.Select(false);
     }
 
+    public override ICardView GetCardView()
+    {
+        return this;
+    }
+
     public override void ManageRightClick()
     {
         ChestCardController.ManageRightClick();

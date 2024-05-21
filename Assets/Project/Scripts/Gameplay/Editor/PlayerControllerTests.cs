@@ -298,7 +298,7 @@ namespace SoulOfSteelTests {
                 cardInfo2,
                 cardInfo3
             });
-            _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
+            // _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
 
             // Act
             PlayerController systemUnderTest = CreateSystem();
@@ -326,7 +326,7 @@ namespace SoulOfSteelTests {
                 cardInfo2,
                 cardInfo3
             });
-            _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
+            // _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
 
             // Act
             PlayerController systemUnderTest = CreateSystem();
@@ -354,7 +354,7 @@ namespace SoulOfSteelTests {
                 cardInfo2,
                 cardInfo3
             });
-            _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
+            // _mockView.GetDeckInfo().Returns(mockPlayerCardsInfo);
             _mockView.AddCardToPanel(CardType.Pilot).Returns(Substitute.For<IPilotCardView>());
 
             // Act
@@ -526,6 +526,55 @@ namespace SoulOfSteelTests {
 
             // Assert
             Assert.AreEqual(10, systemUnderTest.GetCurrentDamage());
+        }
+
+        #endregion
+
+        #region ReceivedDamage
+
+        [Test]
+        public void ReceivedDamage_DamageReceivedByLocalPlayer_UpdatesHealthAndCallsValidateHealthStatus()
+        {
+            // Arrange
+            int initialHealth = 10;
+            int damage = 10;
+            int playerId = 1;
+            var mockPilot = Substitute.For<IPilotCardView>();
+            mockPilot.PilotCardController.GetHealth().Returns(initialHealth);
+
+            // Act
+            PlayerController systemUnderTest = CreateSystem();
+            systemUnderTest.Debug_SetPilot(mockPilot);
+            systemUnderTest.SetPlayerId(playerId);
+            systemUnderTest.SetHealth(initialHealth);
+            systemUnderTest.ReceivedDamage(damage, playerId);
+
+            // Assert
+            Assert.AreEqual(initialHealth - damage, systemUnderTest.GetCurrenHealth());
+            mockPilot.Received(1).SetHealthTMP(initialHealth - damage);
+            _mockGameManager.Received(1).ValidateHealthStatus();
+        }
+
+        [Test]
+        public void ReceivedDamage_DamageNotReceivedByLocalPlayer_DoesNothing()
+        {
+            // Arrange
+            int initialHealth = 10;
+            int damage = 10;
+            int playerId = 1;
+            int otherPlayerId = 2;
+            var mockPilot = Substitute.For<IPilotCardView>();
+
+            // Act
+            PlayerController systemUnderTest = CreateSystem();
+            systemUnderTest.SetPlayerId(playerId);
+            systemUnderTest.SetHealth(initialHealth);
+            systemUnderTest.ReceivedDamage(damage, otherPlayerId);
+
+            // Assert
+            Assert.AreEqual(initialHealth, systemUnderTest.GetCurrenHealth());
+            mockPilot.DidNotReceive().SetHealthTMP(Arg.Any<int>());
+            _mockGameManager.DidNotReceive().ValidateHealthStatus();
         }
 
         #endregion

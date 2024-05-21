@@ -44,6 +44,11 @@ public class EquipmentCardView : CardView, IEquipmentCardView {
         return EquipmentCardController.GetId();
     }
 
+    public override ICardView GetCardView()
+    {
+        return this;
+    }
+
     public override void Select(bool deselect = false)
     {
         EquipmentCardController.Select(deselect);

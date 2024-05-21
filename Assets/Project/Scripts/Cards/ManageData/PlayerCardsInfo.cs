@@ -10,7 +10,7 @@ public interface IPlayerCardsInfo {
 }
 
 [Serializable, CreateAssetMenu(fileName = "PlayerCards_", menuName = "PlayerCards")]
-public class PlayerCardsInfo : ScriptableObject, IPlayerCardsInfo {
+public class PlayerCardsInfo : ScriptableObject {
     public List<CardInfoSerialized.CardInfoStruct> playerCards;
 
     public List<CardInfoSerialized.CardInfoStruct> PlayerCards => playerCards;

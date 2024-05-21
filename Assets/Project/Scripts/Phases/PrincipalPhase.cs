@@ -29,7 +29,6 @@ public class PrincipalPhase : Phase {
         };
 
         // selecting cards
-        Debug.Log($"escoge");
         GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1));
 
         while (!_allCardSelected)
@@ -49,7 +48,6 @@ public class PrincipalPhase : Phase {
             yield return null;
         }
 
-        Debug.Log($"escogio");
         GameManager.Instance.PlayerList.ForEach(player => player.SelectCards(cardTypes, 1, false));
 
         // equipping cards         
@@ -81,7 +79,7 @@ public class PrincipalPhase : Phase {
         GameManager.Instance.ChangePhase(new MovementPhase(matchView));
     }
 
-    private void CardSelected(PlayerView view, CardView card, bool selected)
+    private void CardSelected(IPlayerView view, ICardView card, bool selected)
     {
         if (view.PlayerController.GetPlayerId() ==
             GameManager.Instance.LocalPlayerInstance.PlayerController.GetPlayerId() || GameManager.Instance.testing)

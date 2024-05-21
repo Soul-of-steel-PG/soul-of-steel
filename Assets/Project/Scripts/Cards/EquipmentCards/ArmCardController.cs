@@ -35,7 +35,7 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
         _attackDistance = attackDistance;
         _attackArea = attackArea;
 
-        PlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
+        IPlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
 
         if (Type == CardType.Arm)
         {
@@ -54,7 +54,7 @@ public class ArmCardController : EquipmentCardController, IArmCardController {
     {
         currentCellsShaded = new List<Vector2>();
         currentCellsShaded.Clear();
-        PlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
+        IPlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
         IBoardView currentBoardView = GameManager.Instance.BoardView;
 
         int direction = currentPlayer.PlayerController.GetCurrentDegrees();

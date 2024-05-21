@@ -223,7 +223,7 @@ public class PlayerController : IPlayerController {
 
     public void ShuffleDeck(bool firstTime, bool shuffle)
     {
-        List<CardInfoSerialized.CardInfoStruct> temporalDeck = _view.GetDeckInfo().PlayerCards.ToList();
+        List<CardInfoSerialized.CardInfoStruct> temporalDeck = _view.GetDeckInfo().playerCards.ToList();
         if (shuffle)
         {
             int n = temporalDeck.Count;
@@ -340,7 +340,6 @@ public class PlayerController : IPlayerController {
     private void CellSelected(Vector2 index, bool select)
     {
         if (select) _cellsSelected.Add(index);
-        else _cellsSelected.Remove(index);
     }
 
     #endregion

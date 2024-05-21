@@ -7986,6 +7986,7 @@ MonoBehaviour:
   isFirstRound: 0
   movementTurn: 0
   attackTurn: 0
+  scrapPanel: {fileID: 0}
   myEquipmentPanel: {fileID: 0}
   enemyEquipmentPanel: {fileID: 0}
   LocalPilotCardView: {fileID: 0}

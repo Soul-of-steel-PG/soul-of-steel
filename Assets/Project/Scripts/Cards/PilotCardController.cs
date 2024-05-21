@@ -70,7 +70,7 @@ public class PilotCardController : CardController, IPilotCardController {
     {
         currentCellsShaded = new List<Vector2>();
         currentCellsShaded.Clear();
-        PlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
+        IPlayerView currentPlayer = GameManager.Instance.LocalPlayerInstance;
         IBoardView currentBoardView = GameManager.Instance.BoardView;
 
         int direction = currentPlayer.PlayerController.GetCurrentDegrees();

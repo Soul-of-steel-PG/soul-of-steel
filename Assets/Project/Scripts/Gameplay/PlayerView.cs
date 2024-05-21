@@ -19,7 +19,7 @@ public interface IPlayerView {
     bool PhotonViewIsMine { get; }
     void SelectCards(List<CardType> type, int amount, bool setSelecting = true);
     void ClearPanel(Transform panel);
-    IPlayerCardsInfo GetDeckInfo();
+    PlayerCardsInfo GetDeckInfo();
     bool GetAttackDone();
     void SetAttackDone(bool attackDone);
     void DestroyGO(GameObject go);
@@ -29,15 +29,19 @@ public interface IPlayerView {
     void DrawCards(int amount, bool fullDraw);
     void SelectMovement();
     string GetPlayerName();
+    bool _inAnimation { get; set; }
+    void SelectAttack();
+    bool GetEffectTurnDone();
+    bool GetMovementTurnDone();
 }
 
 [Serializable]
 public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable {
     [SerializeField] private PhotonView pv;
-    [ShowInInspector] private PlayerCardsInfo _deckInfo;
+    [ShowInInspector] public PlayerCardsInfo _deckInfo;
     private PlayerMovement _playerMovement;
 
-    public bool _inAnimation;
+    public bool _inAnimation { get; set; }
     private bool _receivePriority;
     private GameObject _handCardsPanel;
     private bool _myMovementTurn;
@@ -243,7 +247,7 @@ public class PlayerView : MonoBehaviourPunCallbacks, IPlayerView, IPunObservable
         }
     }
 
-    public IPlayerCardsInfo GetDeckInfo()
+    public PlayerCardsInfo GetDeckInfo()
     {
         return _deckInfo;
     }

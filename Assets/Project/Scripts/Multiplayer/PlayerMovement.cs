@@ -178,7 +178,7 @@ public class PlayerMovement : MonoBehaviour {
                     {
                         currentPlayer.photonView.RPC("RpcReceivedDamage", RpcTarget.AllBuffered, 3,
                             currentPlayer.PlayerController.GetPlayerId());
-                        GameManager.Instance.LocalPlayerInstance.photonView.RPC("RpcPutMines",
+                        GameManager.Instance.LocalPlayerInstance.GetPv().RPC("RpcPutMines",
                             RpcTarget.AllBuffered, (int)index.y, (int)index.x, false);
                     }
                     else

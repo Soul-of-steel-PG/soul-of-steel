@@ -21,8 +21,8 @@ public interface IGameManager {
     bool GetTesting();
     void OnLocalAttackDone();
     void OnMovementSelected(Movement getDefaultMovement, PlayerView view, int getMovementIterations);
-    PlayerView LocalPlayerInstance { get; set; }
-    void OnCardSelected(PlayerView playerView, CardView card, bool selected);
+    IPlayerView LocalPlayerInstance { get; set; }
+    void OnCardSelected(IPlayerView playerView, ICardView card, bool selected);
     ScrapPanel ScrapPanel { get; set; }
 }
 
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager {
     public EquipmentPanel enemyEquipmentPanel;
 
     public Phase CurrentPhase { get; private set; }
-    public PlayerView LocalPlayerInstance { get; set; }
+    public IPlayerView LocalPlayerInstance { get; set; }
     public PhotonGame PhotonGame { get; set; }
 
     public PilotCardView LocalPilotCardView;
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager {
     public event Action OnDrawFinishedEvent;
     public event Action<Vector2> OnCellClickedEvent;
     public event Action OnGameStartedEvent;
-    public event Action<PlayerView, CardView, bool> OnCardSelectedEvent; // card has been selected or deselected
+    public event Action<IPlayerView, ICardView, bool> OnCardSelectedEvent; // card has been selected or deselected
     public event Action OnCardSelectingFinishedEvent; // all cards has been selected
     public event Action<int> OnPrioritySetEvent;
 
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>, IGameManager {
     }
 
 
-    public void OnCardSelected(PlayerView playerView, CardView card, bool selected)
+    public void OnCardSelected(IPlayerView playerView, ICardView card, bool selected)
     {
         OnCardSelectedEvent?.Invoke(playerView, card, selected);
     }

@@ -55,7 +55,7 @@ public class BattlePhase : Phase {
                 // if (!GameManager.Instance.ValidateHealthStatus()) yield break;
 
                 if (!GameManager.Instance.testing)
-                    GameManager.Instance.LocalPlayerInstance.photonView.RPC("RpcSetAttackTurn", RpcTarget.AllBuffered);
+                    GameManager.Instance.LocalPlayerInstance.GetPv().RPC("RpcSetAttackTurn", RpcTarget.AllBuffered);
             }
         }
 
